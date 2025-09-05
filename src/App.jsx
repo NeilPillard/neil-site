@@ -164,8 +164,8 @@ export default function App() {
       </Section>
 
       <footer className="text-center py-6 border-t mt-12 text-sm opacity-70">
-        © {new Date().getFullYear()} Neil Jose Pillard. Built with ❤️ using React & Tailwind.
-      </footer>
+  © 2025 Neil Jose Pillard
+</footer>
     </div>
   )
 }
