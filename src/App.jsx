@@ -164,7 +164,7 @@ export default function App() {
       </Section>
 
       <footer className="text-center py-6 border-t mt-12 text-sm opacity-70">
-  © 2025 Neil Jose Pillard
+  © 2025 Neil Jose Pillard. All rights reserved.
 </footer>
     </div>
   )
