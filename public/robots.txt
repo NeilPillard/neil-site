@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://kouponly-web-pitch-deck.pages.dev/sitemap.xml

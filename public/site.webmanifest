@@ -1,0 +1,16 @@
+{
+  "name": "Kouponly Investor Overview",
+  "short_name": "Kouponly",
+  "description": "Kouponly connects verified students with relevant local offers and brands.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1d0306",
+  "theme_color": "#650b13",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
