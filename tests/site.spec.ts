@@ -15,9 +15,18 @@ test('renders every section without horizontal page overflow', async ({ page }) 
 })
 
 test('keeps hash navigation and contact links functional', async ({ page }) => {
+  const menuToggle = page.getByRole('button', { name: 'Open navigation' })
+  if (await menuToggle.isVisible()) {
+    await menuToggle.click()
+  }
+
   await page.getByRole('link', { name: 'Product', exact: true }).click()
   await expect(page).toHaveURL(/#slide-5$/)
   await expect(page.locator('#slide-5')).toBeInViewport()
+
+  if (await menuToggle.isVisible()) {
+    await menuToggle.click()
+  }
 
   await page.getByRole('link', { name: 'Contact', exact: true }).click()
   await expect(page).toHaveURL(/#slide-16$/)

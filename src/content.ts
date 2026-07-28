@@ -22,35 +22,33 @@ export type Founder = {
 }
 
 export const navigation: NavigationItem[] = [
-  { label: 'Product', target: 'slide-5' },
-  { label: 'Market', target: 'slide-4' },
-  { label: 'Strategy', target: 'slide-8' },
-  { label: 'Team', target: 'slide-10' },
-  { label: 'Investment', target: 'slide-13' },
-  { label: 'Contact', target: 'slide-16' },
+  { label: 'Experience', target: 'slide-5' },
+  { label: 'Opportunity', target: 'slide-4' },
+  { label: 'Investment', target: 'slide-9' },
+  { label: 'Connect', target: 'slide-12' },
 ]
 
 export const problemStatements = [
-  'Rising living and education costs put financial pressure on students.',
-  'Brands struggle to reach and engage Gen Z audiences effectively.',
-  'There is no unified platform dedicated to student needs.',
+  'Student life costs more every year.',
+  'Brands spend more to earn less Gen Z attention.',
+  'The offers students need are scattered, generic, and hard to trust.',
 ]
 
 export const marketStats = [
   {
     value: '800M+',
-    label: 'Youth audience',
-    note: 'A massive, experience-driven consumer segment.',
+    label: 'Young consumers',
+    note: 'A vast audience choosing experiences every day.',
   },
   {
     value: '65%',
-    label: 'Population under 35',
-    note: 'Mobile-first consumers who actively shape demand.',
+    label: 'Under 35',
+    note: 'Mobile-first consumers shaping what comes next.',
   },
   {
     value: 'Weekly',
-    label: 'High-frequency behavior',
-    note: 'Millions of young consumers go out every week.',
+    label: 'Every week',
+    note: 'Discovery, decisions, and spending happen repeatedly.',
   },
 ]
 
@@ -74,14 +72,14 @@ export const journeySteps = [
 
 export const verificationSteps = [
   {
-    title: 'Instant verification',
-    timing: 'Immediate',
-    copy: 'Users enter a student email or upload a 10th/12th certificate for automated verification.',
+    title: 'Verify instantly',
+    timing: 'In seconds',
+    copy: 'Use a student email or eligible certificate to unlock access.',
   },
   {
-    title: 'Document review',
+    title: 'Review securely',
     timing: 'Within 24 hours',
-    copy: 'Users upload a student ID or supporting documents for review by Kouponly.',
+    copy: 'Upload a student ID or supporting document for a secure review.',
   },
 ]
 
@@ -166,9 +164,9 @@ export const founders: Founder[] = [
     phone: '+974 3363 7582',
     linkedin: 'https://www.linkedin.com/in/neilpilllard',
     achievements: [
-      'Scaled ClassMate App Qatar during its early prototype phase and led the launch.',
-      'Raised GMV to QAR 10M in 11 months.',
-      'Secured more than 350 partnerships in under six months.',
+      'Took ClassMate Qatar from early prototype to launch.',
+      'Grew GMV to QAR 10M in 11 months.',
+      'Signed 350+ partnerships in under six months.',
     ],
   },
   {
@@ -182,19 +180,19 @@ export const founders: Founder[] = [
     phone: '+974 70450340',
     linkedin: 'https://www.linkedin.com/in/aazam-ln',
     achievements: [
-      'Designed and developed the RealX mobile and web application ecosystem.',
-      'OpenMainframe technical maintainer at the Linux Foundation.',
-      'Open-source contributor in data engineering at Airbyte.',
-      'Google Summer of Code contributor in AI research.',
+      'Designed and built the RealX mobile and web ecosystem.',
+      'Technical maintainer for Open Mainframe at the Linux Foundation.',
+      'Contributed to data engineering at Airbyte.',
+      'Selected for Google Summer of Code in AI research.',
     ],
   },
 ]
 
 export const investmentAllocations = [
-  { label: 'Technology and product development', value: 20 },
-  { label: 'Team expansion and salaries', value: 25 },
-  { label: 'Vendor acquisition and partnerships', value: 10 },
-  { label: 'Legal, compliance, and operations', value: 5 },
+  { label: 'Product and technology', value: 20 },
+  { label: 'People and talent', value: 25 },
+  { label: 'Partners and supply', value: 10 },
+  { label: 'Operations and compliance', value: 5 },
 ]
 
 export const projectionYears = [

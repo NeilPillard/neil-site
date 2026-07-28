@@ -3,11 +3,11 @@ import { describe, expect, it } from 'vitest'
 import App from './App'
 
 describe('Kouponly investor overview', () => {
-  it('renders the complete 16-section narrative with stable deep links', () => {
+  it('renders the complete 12-section narrative with stable deep links', () => {
     const { container } = render(<App />)
     const sections = container.querySelectorAll('.investor-section')
 
-    expect(sections).toHaveLength(16)
+    expect(sections).toHaveLength(12)
     sections.forEach((section, index) => {
       expect(section).toHaveAttribute('id', `slide-${index + 1}`)
     })
@@ -18,7 +18,7 @@ describe('Kouponly investor overview', () => {
 
     expect(screen.queryByText(/Tcke/i)).not.toBeInTheDocument()
     expect(screen.getAllByText(/management estimates/i).length).toBeGreaterThan(0)
-    expect(screen.getByText(/60% currently specified/i)).toBeInTheDocument()
+    expect(screen.getByText(/60% allocated today/i)).toBeInTheDocument()
     expect(screen.getByText(/relative growth indices/i)).toBeInTheDocument()
   })
 

@@ -1,10 +1,8 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import {
-  businessModel,
   expansionStrategy,
   founders,
   investmentAllocations,
-  journeySteps,
   launchStrategy,
   marketStats,
   navigation,
@@ -15,7 +13,7 @@ import {
   type Founder,
 } from './content'
 
-const totalSections = 16
+const totalSections = 12
 
 type ImageAsset = 'mockup' | 'intro' | 'journey' | 'solution' | 'neil' | 'aazam'
 type SectionTone = 'wine' | 'ink' | 'lime' | 'paper'
@@ -121,25 +119,39 @@ function InvestorSection({
 }
 
 function SiteHeader({ activeSection }: { activeSection: string }) {
+  const [menuOpen, setMenuOpen] = useState(false)
+
   return (
-    <header className="site-header">
+    <header className={`site-header${menuOpen ? ' is-menu-open' : ''}`}>
       <div className="site-header__inner">
         <a className="site-logo" href="#slide-1" aria-label="Kouponly home">
           <Brand />
         </a>
-        <nav className="site-nav" aria-label="Investor overview">
+        <button
+          className="menu-toggle"
+          type="button"
+          aria-expanded={menuOpen}
+          aria-controls="site-navigation"
+          aria-label={menuOpen ? 'Close navigation' : 'Open navigation'}
+          onClick={() => setMenuOpen((open) => !open)}
+        >
+          <span />
+          <span />
+        </button>
+        <nav className="site-nav" id="site-navigation" aria-label="Investor overview">
           {navigation.map(({ label, target }) => (
             <a
               key={target}
               href={`#${target}`}
               aria-current={activeSection === target ? 'location' : undefined}
+              onClick={() => setMenuOpen(false)}
             >
               {label}
             </a>
           ))}
         </nav>
-        <a className="header-cta" href="#slide-16">
-          Start a conversation
+        <a className="header-cta" href="#slide-12">
+          Connect
         </a>
       </div>
     </header>
@@ -147,26 +159,132 @@ function SiteHeader({ activeSection }: { activeSection: string }) {
 }
 
 function Device({
-  asset,
+  screen,
   alt,
   className = '',
 }: {
-  asset: ImageAsset
+  screen: 'verification' | 'discovery' | 'redemption'
   alt: string
   className?: string
 }) {
   return (
-    <div className={`device ${className}`}>
+    <figure className={`device ${className}`} aria-label={alt}>
       <span className="device__island" aria-hidden="true" />
-      <ResponsiveImage
-        asset={asset}
-        alt={alt}
-        width={1200}
-        height={675}
-        sizes="(max-width: 640px) 76vw, 420px"
-      />
-    </div>
+      <div className="app-screen" aria-hidden="true">
+        <div className="app-status" aria-hidden="true">
+          <b>9:41</b>
+          <span>● ● ▰</span>
+        </div>
+        <div className="app-bar">
+          <Brand dark />
+          <span className="app-avatar" aria-hidden="true">
+            K
+          </span>
+        </div>
+        {screen === 'verification' && (
+          <div className="screen-verification">
+            <span className="screen-icon" aria-hidden="true">
+              ✓
+            </span>
+            <p className="screen-eyebrow">Student access</p>
+            <div className="screen-title">
+              Verify once.
+              <br />
+              Save all year.
+            </div>
+            <p>Use your student email to unlock verified offers near you.</p>
+            <label>
+              Student email
+              <span>name@university.edu</span>
+            </label>
+            <button type="button" tabIndex={-1}>
+              Verify student status
+            </button>
+            <small>Secure verification · Usually instant</small>
+          </div>
+        )}
+        {screen === 'discovery' && (
+          <div className="screen-discovery">
+            <p className="screen-eyebrow">Good afternoon</p>
+            <div className="screen-title">What feels good today?</div>
+            <div className="screen-search">Search food, coffee, experiences</div>
+            <div className="offer-feature">
+              <span>Weekend pick</span>
+              <strong>35% off your next coffee run.</strong>
+              <small>Daily Grind · 0.8 km</small>
+            </div>
+            <div className="offer-heading">
+              <b>Near you</b>
+              <span>See all</span>
+            </div>
+            <div className="offer-row">
+              <i className="offer-art offer-art--food">🍔</i>
+              <div>
+                <b>Urban Burger Club</b>
+                <small>30% off · Today</small>
+              </div>
+              <strong>›</strong>
+            </div>
+            <div className="offer-row">
+              <i className="offer-art offer-art--coffee">☕</i>
+              <div>
+                <b>Morning Theory</b>
+                <small>Free pastry · 1.1 km</small>
+              </div>
+              <strong>›</strong>
+            </div>
+          </div>
+        )}
+        {screen === 'redemption' && (
+          <div className="screen-redemption">
+            <div className="success-mark" aria-hidden="true">
+              ✓
+            </div>
+            <p className="screen-eyebrow">Offer redeemed</p>
+            <div className="screen-title">You saved ₹240.</div>
+            <p>Your student offer at Daily Grind has been applied.</p>
+            <div className="receipt">
+              <span>Redemption ID</span>
+              <b>KP87TI3</b>
+              <span>Offer</span>
+              <b>35% off</b>
+              <span>Today</span>
+              <b>4:42 PM</b>
+            </div>
+            <button type="button" tabIndex={-1}>
+              Discover another offer
+            </button>
+          </div>
+        )}
+        <div className="app-tabs" aria-hidden="true">
+          <span className={screen === 'discovery' ? 'is-active' : ''}>
+            ⌂<small>Home</small>
+          </span>
+          <span>
+            ♡<small>Saved</small>
+          </span>
+          <span>
+            ⌖<small>Explore</small>
+          </span>
+          <span>
+            ○<small>Profile</small>
+          </span>
+        </div>
+      </div>
+    </figure>
   )
+}
+
+function ProductScreenshot({
+  src,
+  alt,
+  className = '',
+}: {
+  src: string
+  alt: string
+  className?: string
+}) {
+  return <img className={`product-screenshot ${className}`} src={src} alt={alt} />
 }
 
 function ProofBadge({ children }: { children: ReactNode }) {
@@ -210,39 +328,32 @@ function Intro() {
   return (
     <InvestorSection number={1} label="Investor overview" className="hero-section">
       <div className="hero-copy">
-        <ProofBadge>Student-first engagement platform</ProofBadge>
+        <ProofBadge>Made for student life</ProofBadge>
         <h1>
-          Better value for Gen Z.
+          Save on more.
           <br />
-          Better attention for brands.
+          Live a little bigger.
         </h1>
         <p>
-          Kouponly connects verified students with local experiences and meaningful
-          savings—bridging the gap between Gen Z and brands.
+          One place for verified students to discover better value—and for brands to
+          become part of everyday life.
         </p>
         <div className="hero-actions">
-          <a className="button button--lime" href="#slide-13">
-            Review the opportunity
+          <a className="button button--lime" href="#slide-9">
+            See the opportunity
           </a>
-          <a className="button button--ghost" href="#slide-16">
-            Contact the founders
+          <a className="button button--ghost" href="#slide-12">
+            Meet the founders
           </a>
         </div>
-        <p className="hero-proof">Designed around trust, relevance, and repeat use.</p>
+        <p className="hero-proof">Verified. Relevant. Ready when students are.</p>
       </div>
       <div className="hero-visual">
-        <div className="hero-ticket" aria-hidden="true">
-          <span>VERIFIED VALUE</span>
-          <strong>01</strong>
-        </div>
-        <ResponsiveImage
-          asset="mockup"
-          alt="Kouponly app home screen showing local student offers"
-          width={1200}
-          height={1200}
-          className="hero-mockup"
-          sizes="(max-width: 640px) 108vw, (max-width: 1100px) 52vw, 620px"
-          priority
+        <div className="product-stage" aria-hidden="true" />
+        <ProductScreenshot
+          src="/deck-assets/supplied/discovery-transparent.webp"
+          alt="Kouponly product interface displaying local student offers"
+          className="hero-device"
         />
       </div>
     </InvestorSection>
@@ -253,10 +364,9 @@ function Problem() {
   return (
     <InvestorSection number={2} label="Problem" tone="lime" className="problem-section">
       <div className="section-intro">
-        <p className="kicker">A valuable audience is being missed</p>
+        <p className="kicker">The disconnect</p>
         <h2>
-          Students are influential consumers, yet brands still struggle to serve them
-          well.
+          Students want more from every rupee. Brands want more from every impression.
         </h2>
       </div>
       <ul className="problem-list">
@@ -281,20 +391,20 @@ function Solution() {
     >
       <div className="section-intro">
         <p className="kicker">Meet Kouponly</p>
-        <h2>A verified channel between student demand and local supply.</h2>
+        <h2>One app. More student life.</h2>
         <p className="lede">
-          Kouponly is an engagement platform built for students and Gen Z, giving users
-          relevant savings while brands earn measurable visits and repeat attention.
+          Students discover offers worth using. Brands reach verified people ready to
+          visit, buy, and come back.
         </p>
         <div className="proof-row" aria-label="Kouponly value proposition">
-          <ProofBadge>Verified users</ProofBadge>
-          <ProofBadge>Relevant offers</ProofBadge>
-          <ProofBadge>Measurable visits</ProofBadge>
+          <ProofBadge>Real students</ProofBadge>
+          <ProofBadge>Useful offers</ProofBadge>
+          <ProofBadge>Visible results</ProofBadge>
         </div>
       </div>
-      <Device
-        asset="solution"
-        alt="Kouponly product interface displaying student offers"
+      <ProductScreenshot
+        src="/deck-assets/supplied/welcome-transparent.webp"
+        alt="Kouponly welcome screen"
       />
     </InvestorSection>
   )
@@ -304,11 +414,11 @@ function Market() {
   return (
     <InvestorSection number={4} label="Market opportunity" tone="ink">
       <div className="section-intro section-intro--split">
-        <p className="kicker">A high-frequency consumer market</p>
-        <h2>Built for one of the world’s largest youth-driven audiences.</h2>
+        <p className="kicker">The opportunity</p>
+        <h2>Young India is already moving.</h2>
         <p className="lede">
-          Kouponly is positioned around a mobile-first generation that discovers, chooses,
-          and shares experiences in real time.
+          Mobile-first consumers discover, decide, and share in real time. Kouponly meets
+          them at the moment of choice.
         </p>
       </div>
       <ul className="metric-grid">
@@ -321,8 +431,7 @@ function Market() {
         ))}
       </ul>
       <p className="data-note">
-        Market figures are management estimates. The supporting source pack is available
-        during diligence.
+        Management estimates. Supporting sources are available during diligence.
       </p>
     </InvestorSection>
   )
@@ -332,21 +441,15 @@ function Journey() {
   return (
     <InvestorSection number={5} label="Product journey" className="journey-section">
       <div className="section-intro section-intro--compact">
-        <p className="kicker">From verification to value</p>
-        <h2>One clear loop for students and brands.</h2>
+        <p className="kicker">The experience</p>
+        <h2>Verify. Discover. Save.</h2>
       </div>
-      <ol className="journey-grid">
-        {journeySteps.map((step, index) => (
-          <li key={step.title}>
-            <span className="journey-number">{String(index + 1).padStart(2, '0')}</span>
-            <Device asset={step.image} alt={`${step.title} in the Kouponly app`} />
-            <div>
-              <h3>{step.title}</h3>
-              <p>{step.copy}</p>
-            </div>
-          </li>
-        ))}
-      </ol>
+      <figure className="journey-showcase">
+        <img
+          src="/deck-assets/supplied/journey-flow.webp"
+          alt="Kouponly journey from student verification through exploring discounts to redeeming offers"
+        />
+      </figure>
     </InvestorSection>
   )
 }
@@ -355,11 +458,10 @@ function Verification() {
   return (
     <InvestorSection number={6} label="Technology" tone="lime">
       <div className="section-intro section-intro--split">
-        <p className="kicker">Trust is the product infrastructure</p>
-        <h2>Two verification paths. One credible student network.</h2>
+        <p className="kicker">Trust, built in</p>
+        <h2>Real students. Real value.</h2>
         <p className="lede">
-          Verification protects offer quality for brands while keeping eligibility
-          straightforward for students.
+          Simple verification protects every offer—without getting in the student’s way.
         </p>
       </div>
       <ol className="verification-grid">
@@ -378,20 +480,8 @@ function Verification() {
   )
 }
 
-function BusinessModel() {
-  return (
-    <InvestorSection number={7} label="Business model" tone="paper">
-      <div className="section-intro section-intro--compact">
-        <p className="kicker">Multiple aligned revenue paths</p>
-        <h2>Designed to scale with users, brands, and distribution partners.</h2>
-      </div>
-      <DetailGrid items={businessModel} />
-    </InvestorSection>
-  )
-}
-
 function Strategy({ expansion = false }: { expansion?: boolean }) {
-  const number = expansion ? 9 : 8
+  const number = expansion ? 8 : 7
   const items = expansion ? expansionStrategy : launchStrategy
 
   return (
@@ -413,7 +503,7 @@ function Strategy({ expansion = false }: { expansion?: boolean }) {
 
 function Team() {
   return (
-    <InvestorSection number={10} label="Founding team" tone="lime">
+    <InvestorSection number={8} label="Founding team" tone="lime">
       <div className="section-intro section-intro--split">
         <p className="kicker">Operators across growth and technology</p>
         <h2>Built by founders who have shipped, scaled, and partnered.</h2>
@@ -448,17 +538,11 @@ function FounderProfile({ founder, number }: { founder: Founder; number: number 
     <InvestorSection
       number={number}
       label={founder.fullName}
-      tone={number === 11 ? 'wine' : 'paper'}
+      tone={number === 8 ? 'wine' : 'paper'}
       className="founder-profile"
     >
       <div className="founder-profile__identity">
-        <ResponsiveImage
-          asset={founder.image}
-          alt={founder.name}
-          width={1200}
-          height={675}
-          sizes="(max-width: 640px) 42vw, 360px"
-        />
+        <img src={`/deck-assets/supplied/${founder.id}.webp`} alt={founder.name} />
         <div>
           <p className="kicker">{founder.role}</p>
           <h2>{founder.focus}</h2>
@@ -475,16 +559,16 @@ function FounderProfile({ founder, number }: { founder: Founder; number: number 
 
 function Ask() {
   return (
-    <InvestorSection number={13} label="The ask" tone="ink" className="ask-section">
+    <InvestorSection number={9} label="The ask" tone="ink" className="ask-section">
       <div className="ask-ticket">
-        <p className="kicker">Seed investment opportunity</p>
-        <h2>Seeking ₹6,00,00,000 for 10% equity.</h2>
+        <p className="kicker">The seed round</p>
+        <h2>₹6 crore. 10% equity. One category to define.</h2>
         <p>
-          Capital will be used to strengthen the product, team, partner network, and
-          operating foundation required for scale.
+          Build the product. Grow the team. Expand the network. Create the place students
+          check before they go out.
         </p>
-        <a className="button button--lime" href="#slide-16">
-          Discuss the round
+        <a className="button button--lime" href="#slide-12">
+          Let’s talk
         </a>
       </div>
     </InvestorSection>
@@ -495,10 +579,10 @@ function InvestmentBreakdown() {
   const listedTotal = investmentAllocations.reduce((sum, item) => sum + item.value, 0)
 
   return (
-    <InvestorSection number={14} label="Use of funds">
+    <InvestorSection number={10} label="Use of funds">
       <div className="section-intro section-intro--compact">
-        <p className="kicker">Current allocation framework</p>
-        <h2>Investment breakdown</h2>
+        <p className="kicker">Where capital goes</p>
+        <h2>Build what compounds.</h2>
       </div>
       <figure className="allocation-figure">
         <div className="allocation-list">
@@ -518,10 +602,9 @@ function InvestmentBreakdown() {
           ))}
         </div>
         <figcaption>
-          <strong>{listedTotal}% currently specified.</strong>
+          <strong>{listedTotal}% allocated today.</strong>
           <span>
-            The remaining {100 - listedTotal}% allocation has not yet been specified and
-            will be finalized before investment.
+            The remaining {100 - listedTotal}% will be finalized before investment.
           </span>
         </figcaption>
       </figure>
@@ -531,19 +614,19 @@ function InvestmentBreakdown() {
 
 function Projections() {
   return (
-    <InvestorSection number={15} label="Five-year outlook" tone="paper">
+    <InvestorSection number={11} label="Five-year outlook" tone="paper">
       <div className="section-intro section-intro--split">
-        <p className="kicker">Illustrative management trajectory</p>
-        <h2>Growth outlook, years one through five.</h2>
+        <p className="kicker">The five-year view</p>
+        <h2>Start focused. Scale with momentum.</h2>
         <p className="lede">
-          The charts show relative growth indices, not audited forecasts. Detailed
-          financial values and assumptions are available during diligence.
+          Relative growth indices, not audited forecasts. Detailed assumptions are
+          available during diligence.
         </p>
       </div>
       <div className="projection-grid">
         <figure>
           <figcaption>
-            <span>Revenue growth index</span>
+            <span>Revenue momentum</span>
             <strong>0–100</strong>
           </figcaption>
           <div className="vertical-chart" aria-hidden="true">
@@ -558,7 +641,7 @@ function Projections() {
         </figure>
         <figure>
           <figcaption>
-            <span>User growth index</span>
+            <span>User momentum</span>
             <strong>0–100</strong>
           </figcaption>
           <div className="horizontal-chart" aria-hidden="true">
@@ -613,10 +696,10 @@ function ContactCard({ founder }: { founder: Founder }) {
 
 function Contact() {
   return (
-    <InvestorSection number={16} label="Contact" tone="lime" className="contact-section">
+    <InvestorSection number={12} label="Contact" tone="lime" className="contact-section">
       <div className="section-intro section-intro--compact">
-        <p className="kicker">Continue the conversation</p>
-        <h2>Let’s build the student value network.</h2>
+        <p className="kicker">The next step</p>
+        <h2>Let’s make student life go further.</h2>
       </div>
       <div className="contact-grid">
         {founders.map((founder) => (
@@ -633,7 +716,7 @@ function SiteFooter() {
       <a href="#slide-1" aria-label="Back to Kouponly overview">
         <Brand />
       </a>
-      <p>Investor overview · Management estimates are identified throughout.</p>
+      <p>Investor overview · Management estimates noted throughout.</p>
       <a href="https://kouponly.com" target="_blank" rel="noopener noreferrer">
         kouponly.com <span aria-hidden="true">↗</span>
       </a>
@@ -750,12 +833,8 @@ export default function App() {
         <Market />
         <Journey />
         <Verification />
-        <BusinessModel />
-        <Strategy />
-        <Strategy expansion />
-        <Team />
-        <FounderProfile founder={founders[0]} number={11} />
-        <FounderProfile founder={founders[1]} number={12} />
+        <FounderProfile founder={founders[0]} number={7} />
+        <FounderProfile founder={founders[1]} number={8} />
         <Ask />
         <InvestmentBreakdown />
         <Projections />
