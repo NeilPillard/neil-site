@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect } from 'react'
 
 const totalSlides = 16
 const founderLinks = {
@@ -6,32 +6,33 @@ const founderLinks = {
   aazam: 'https://www.linkedin.com/in/aazam-ln',
 }
 
-function useDeckViewport() {
-  const [viewport, setViewport] = useState({ scale: 1, width: 1920, height: 1080, mobile: false })
-  useEffect(() => {
-    const update = () => {
-      const mobile = window.innerWidth < 768
-      const width = mobile ? 390 : 1920
-      const height = mobile ? 844 : 1080
-      setViewport({ mobile, width, height, scale: Math.min(window.innerWidth / width, window.innerHeight / height) })
-    }
-    update()
-    window.addEventListener('resize', update)
-    return () => window.removeEventListener('resize', update)
-  }, [])
-  return viewport
-}
+const navigation = [
+  ['Product', 5],
+  ['Market', 4],
+  ['Strategy', 8],
+  ['Team', 10],
+  ['Investment', 13],
+  ['Contact', 16],
+]
 
 function Brand({ dark = false }) {
   return <span className={`brand ${dark ? 'brand--dark' : ''}`}>koup<span>o</span>nly</span>
 }
 
-function DeckChrome({ number, section, light = false }) {
-  return <>
-    <div className={`eyebrow ${light ? 'light' : ''}`}>{section}</div>
-    <a className={`mini-brand ${light ? 'light' : ''}`} href="https://kouponly.com" target="_blank" rel="noreferrer" aria-label="Visit kouponly.com"><Brand dark={!light} />.com</a>
-    <div className={`slide-number ${light ? 'light' : ''}`}>{String(number).padStart(2, '0')} / {String(totalSlides).padStart(2, '0')}</div>
-  </>
+function SiteHeader() {
+  return <header className="site-header">
+    <div className="site-header__inner">
+      <a className="site-logo" href="#slide-1" aria-label="Kouponly home"><Brand /></a>
+      <nav className="site-nav" aria-label="Primary navigation">
+        {navigation.map(([label, slide]) => <a key={label} href={`#slide-${slide}`}>{label}</a>)}
+      </nav>
+      <a className="site-link" href="https://kouponly.com" target="_blank" rel="noreferrer">kouponly.com <span aria-hidden="true">↗</span></a>
+    </div>
+  </header>
+}
+
+function SectionHeader({ number, section }) {
+  return <div className="section-header"><span>{String(number).padStart(2, '0')}</span>{section}</div>
 }
 
 function Pattern() { return <div className="pattern" aria-hidden="true" /> }
@@ -44,11 +45,13 @@ const Details = ({ title, children }) => <div className="detail"><Check /><div><
 const Stat = ({ value, label, note }) => <div className="stat"><strong>{value}</strong><b>{label}</b><span>{note}</span></div>
 
 function Slide({ number, section, children, tone = 'wine', className = '' }) {
-  return <article className={`slide slide--${tone} ${className}`} aria-label={`Slide ${number}: ${section}`}>
+  return <section id={`slide-${number}`} className={`slide slide--${tone} ${className}`} aria-label={`Section ${number}: ${section}`}>
     {tone === 'lime' && <Pattern />}
-    <DeckChrome number={number} section={section} light={tone === 'wine'} />
-    <div className="slide-content">{children}</div>
-  </article>
+    <div className="section-shell">
+      <SectionHeader number={number} section={section} />
+      <div className="slide-content">{children}</div>
+    </div>
+  </section>
 }
 
 function Intro() { return <Slide number={1} section="INTRODUCING" className="hero-slide">
@@ -57,15 +60,15 @@ function Intro() { return <Slide number={1} section="INTRODUCING" className="her
 
 function Problem() { return <Slide number={2} section="PROBLEM" tone="lime" className="centered-slide">
   <h2>Students represent one of the largest and most influential consumer segments, yet they are underserved by brands.</h2>
-  <div className="three-up"><div>Rising living and education costs put financial pressure on students</div><div>Brands struggle to effectively reach and engage Gen Z audiences</div><div>There is no unified platform dedicated to student needs</div></div>
+  <div className="three-up"><div>Rising living and education costs put financial pressure on students</div><div>Brands struggle to effectively reach and engage Gen Z audiences</div><div>Tcke is no unified platform dedicated to student needs</div></div>
 </Slide> }
 
 function Solution() { return <Slide number={3} section="SOLUTION" className="solution-slide">
-  <div><p className="display-small">Meet</p><h2><Brand /></h2><p className="solution-copy"><Brand /> is the first engagement platform in India built exclusively for students and Gen Z.</p></div><img className="hero-mockup solution-mockup" src="/deck-assets/mockup.png" alt="Kouponly app home screen" />
+  <div><p className="display-small">Meet</p><h2><Brand /></h2><p className="solution-copy"><Brand /> is the first engagement platform in India built exclusively for students and Gen Z.</p></div><Device image="/deck-assets/solution.jpg" />
 </Slide> }
 
 function Market() { return <Slide number={4} section="MARKET OPPORTUNITY" tone="lime" className="market-slide">
-  <h2>Built for the world’s largest youth-driven market</h2><div className="stats-row"><Stat value="800M+" label="Youth audience" note="Massive, experience-driven audience" /><Stat value="65%" label="Population under 35" note="Mobile-first and active consumers" /><Stat value="↗" label="Millions go out weekly" note="High-frequency usage potential" /></div>
+  <div className="india-ghost">INDIA</div><h2>Built for the world’s largest youth-driven market</h2><div className="stats-row"><Stat value="800M+" label="Youth in India" note="Massive, experience-driven audience" /><Stat value="65%" label="Population under 35" note="Mobile-first and active consumers" /><Stat value="↗" label="Millions go out weekly" note="High-frequency usage potential" /></div>
 </Slide> }
 
 function Journey() { return <Slide number={5} section="PRODUCT" className="journey-slide">
@@ -97,41 +100,64 @@ function Projection() { const years = [1, 2, 3, 4, 5]; return <Slide number={15}
 function Contact() { return <Slide number={16} section="CONTACT" tone="lime" className="contact-slide"><div className="contact-grid"><ContactPerson name="NEIL JOSE PILLARD" email="neil.j.pillard@gmail.com" phone="+974 3363 7582" linkedin={founderLinks.neil} /><ContactPerson name="AAZAM THAKUR" email="aazamthakur@gmail.com" phone="+974 70450340" linkedin={founderLinks.aazam} /></div></Slide> }
 function ContactPerson({ name, email, phone, linkedin }) { return <section><h2>{name}</h2><a href={`mailto:${email}`}>{email}</a><a href={`tel:${phone.replace(/\s/g, '')}`}>{phone}</a><a href={linkedin} target="_blank" rel="noreferrer">{linkedin.replace('https://www.', '')}</a></section> }
 
-const slides = [Intro, Problem, Solution, Market, Journey, Verify, Model, () => <Strategy />, () => <Strategy expansion />, Team, FounderDetail, () => <FounderDetail aazam />, Ask, Breakdown, Projection, Contact]
+const sections = [Intro, Problem, Solution, Market, Journey, Verify, Model, () => <Strategy />, () => <Strategy expansion />, Team, FounderDetail, () => <FounderDetail aazam />, Ask, Breakdown, Projection, Contact]
+
+function SiteFooter() {
+  return <footer className="site-footer">
+    <a href="https://kouponly.com" target="_blank" rel="noreferrer"><Brand />.com</a>
+    <span>Kouponly investor overview</span>
+  </footer>
+}
 
 export default function App() {
-  const { scale, width: stageWidth, height: stageHeight, mobile } = useDeckViewport()
-  const [active, setActive] = useState(() => Math.max(0, Math.min(totalSlides - 1, Number(location.hash.replace('#slide-', '')) - 1 || 0)))
-  const touchStart = useRef(null)
-  const wheelLock = useRef(false)
-  const setSlide = useCallback((next, replace = false) => {
-    const safe = Math.max(0, Math.min(totalSlides - 1, next))
-    setActive(safe)
-    const url = `#slide-${safe + 1}`
-    replace ? history.replaceState(null, '', url) : history.pushState(null, '', url)
+  useEffect(() => {
+    const sectionElements = [...document.querySelectorAll('.slide')]
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const initialHash = location.hash
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible')
+          revealObserver.unobserve(entry.target)
+        }
+      })
+    }, { threshold: 0.12 })
+    const hashObserver = new IntersectionObserver((entries) => {
+      const activeEntry = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
+      if (activeEntry && location.hash !== `#${activeEntry.target.id}`) {
+        history.replaceState(null, '', `#${activeEntry.target.id}`)
+      }
+    }, { rootMargin: '-34% 0px -56% 0px', threshold: 0 })
+
+    sectionElements.forEach((section) => {
+      if (reducedMotion) section.classList.add('is-visible')
+      else revealObserver.observe(section)
+    })
+
+    const target = initialHash ? document.querySelector(initialHash) : null
+    let observerFrame
+    const scrollFrame = requestAnimationFrame(() => {
+      if (target) target.scrollIntoView({ behavior: 'instant', block: 'start' })
+      observerFrame = requestAnimationFrame(() => {
+        sectionElements.forEach((section) => hashObserver.observe(section))
+      })
+    })
+
+    return () => {
+      cancelAnimationFrame(scrollFrame)
+      if (observerFrame) cancelAnimationFrame(observerFrame)
+      revealObserver.disconnect()
+      hashObserver.disconnect()
+    }
   }, [])
-  useEffect(() => { const listener = () => setActive(Math.max(0, Math.min(totalSlides - 1, Number(location.hash.replace('#slide-', '')) - 1 || 0))); addEventListener('hashchange', listener); return () => removeEventListener('hashchange', listener) }, [])
-  useEffect(() => { const keys = (event) => { if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(event.key)) { event.preventDefault(); setSlide(active + 1) } if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(event.key)) { event.preventDefault(); setSlide(active - 1) } if (event.key === 'Home') setSlide(0); if (event.key === 'End') setSlide(totalSlides - 1) }; addEventListener('keydown', keys); return () => removeEventListener('keydown', keys) }, [active, setSlide])
-  const handleWheel = useCallback((event) => {
-    if (wheelLock.current || Math.abs(event.deltaY) < 12) return
-    event.preventDefault()
-    wheelLock.current = true
-    setSlide(active + (event.deltaY > 0 ? 1 : -1))
-    window.setTimeout(() => { wheelLock.current = false }, 650)
-  }, [active, setSlide])
-  const ActiveSlide = useMemo(() => slides[active], [active])
-  return <main className={`deck-shell ${mobile ? 'deck-shell--mobile' : ''}`} onWheel={handleWheel} onTouchStart={(e) => { const touch = e.changedTouches[0]; touchStart.current = { x: touch.clientX, y: touch.clientY } }} onTouchEnd={(e) => {
-    if (!touchStart.current) return
-    const touch = e.changedTouches[0]
-    const deltaX = touch.clientX - touchStart.current.x
-    const deltaY = touch.clientY - touchStart.current.y
-    const verticalSwipe = mobile && Math.abs(deltaY) > 50 && Math.abs(deltaY) > Math.abs(deltaX)
-    const horizontalSwipe = !mobile && Math.abs(deltaX) > 50 && Math.abs(deltaX) > Math.abs(deltaY)
-    if (verticalSwipe) setSlide(active + (deltaY < 0 ? 1 : -1))
-    if (horizontalSwipe) setSlide(active + (deltaX < 0 ? 1 : -1))
-    touchStart.current = null
-  }}>
-    <div className="stage-wrap" style={{ width: stageWidth * scale, height: stageHeight * scale }}><div className="stage" style={{ width: stageWidth, height: stageHeight, transform: `scale(${scale})` }}><ActiveSlide /></div></div>
-    <nav className="deck-controls" aria-label="Presentation controls"><button onClick={() => setSlide(active - 1)} disabled={active === 0} aria-label="Previous slide">←</button><div className="progress"><i style={{ width: `${((active + 1) / totalSlides) * 100}%` }} /></div><span>{String(active + 1).padStart(2, '0')} / {String(totalSlides).padStart(2, '0')}</span><button onClick={() => setSlide(active + 1)} disabled={active === totalSlides - 1} aria-label="Next slide">→</button></nav>
-  </main>
+
+  return <div className="site-shell">
+    <SiteHeader />
+    <main className="landing-page">
+      {sections.map((Section, index) => <Section key={index} />)}
+    </main>
+    <SiteFooter />
+  </div>
 }
