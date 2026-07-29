@@ -1,8 +1,9 @@
 :root {
   color: #fff;
   background: #1d0306;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text',
-    'Helvetica Neue', sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue',
+    sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   --wine: #650b13;
@@ -820,7 +821,7 @@ h3 {
   position: absolute;
   top: -0.2em;
   right: 0.12em;
-  color: rgba(101, 11, 19, 0.1);
+  color: #a65962;
   font-size: clamp(8rem, 16vw, 15rem);
   font-weight: 760;
   letter-spacing: -0.1em;

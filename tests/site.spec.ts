@@ -6,7 +6,7 @@ test.beforeEach(async ({ page }) => {
 })
 
 test('renders every section without horizontal page overflow', async ({ page }) => {
-  await expect(page.locator('.investor-section')).toHaveCount(16)
+  await expect(page.locator('.investor-section')).toHaveCount(11)
 
   const overflow = await page.evaluate(
     () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
@@ -20,7 +20,7 @@ test('keeps hash navigation and contact links functional', async ({ page }) => {
     await menuToggle.click()
   }
 
-  await page.getByRole('link', { name: 'Product', exact: true }).click()
+  await page.getByRole('link', { name: 'Experience', exact: true }).click()
   await expect(page).toHaveURL(/#slide-5$/)
   await expect(page.locator('#slide-5')).toBeInViewport()
 
@@ -28,8 +28,11 @@ test('keeps hash navigation and contact links functional', async ({ page }) => {
     await menuToggle.click()
   }
 
-  await page.getByRole('link', { name: 'Contact', exact: true }).click()
-  await expect(page).toHaveURL(/#slide-16$/)
+  await page
+    .getByRole('navigation', { name: 'Investor overview' })
+    .getByRole('link', { name: 'Connect', exact: true })
+    .click()
+  await expect(page).toHaveURL(/#slide-11$/)
   await expect(
     page.getByRole('link', { name: 'neil.j.pillard@gmail.com' }),
   ).toHaveAttribute('href', 'mailto:neil.j.pillard@gmail.com')

@@ -133,8 +133,7 @@ h2 {
 .hero-section {
   min-height: calc(100svh - var(--header-height));
   background:
-    radial-gradient(circle at 80% 45%, rgba(197, 255, 61, 0.1), transparent 32%),
-    #120204;
+    radial-gradient(circle at 80% 45%, rgba(197, 255, 61, 0.1), transparent 32%), #120204;
 }
 
 .hero-section .section-shell {
