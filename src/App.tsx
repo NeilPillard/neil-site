@@ -2,7 +2,6 @@ import { useEffect, useState, type ReactNode } from 'react'
 import {
   expansionStrategy,
   founders,
-  investmentAllocations,
   launchStrategy,
   marketStats,
   navigation,
@@ -13,7 +12,7 @@ import {
   type Founder,
 } from './content'
 
-const totalSections = 12
+const totalSections = 11
 
 type ImageAsset = 'mockup' | 'intro' | 'journey' | 'solution' | 'neil' | 'aazam'
 type SectionTone = 'wine' | 'ink' | 'lime' | 'paper'
@@ -150,7 +149,7 @@ function SiteHeader({ activeSection }: { activeSection: string }) {
             </a>
           ))}
         </nav>
-        <a className="header-cta" href="#slide-12">
+        <a className="header-cta" href="#slide-11">
           Connect
         </a>
       </div>
@@ -328,7 +327,7 @@ function Intro() {
   return (
     <InvestorSection number={1} label="Investor overview" className="hero-section">
       <div className="hero-copy">
-        <ProofBadge>Made for student life</ProofBadge>
+        <ProofBadge>Created for Students</ProofBadge>
         <h1>
           Save on more.
           <br />
@@ -342,7 +341,7 @@ function Intro() {
           <a className="button button--lime" href="#slide-9">
             See the opportunity
           </a>
-          <a className="button button--ghost" href="#slide-12">
+          <a className="button button--ghost" href="#slide-11">
             Meet the founders
           </a>
         </div>
@@ -366,7 +365,7 @@ function Problem() {
       <div className="section-intro">
         <p className="kicker">The disconnect</p>
         <h2>
-          Students want more from every rupee. Brands want more from every impression.
+          Students look for value. Brands look for exposure
         </h2>
       </div>
       <ul className="problem-list">
@@ -562,12 +561,12 @@ function Ask() {
     <InvestorSection number={9} label="The ask" tone="ink" className="ask-section">
       <div className="ask-ticket">
         <p className="kicker">The seed round</p>
-        <h2>₹6 crore. 10% equity. One category to define.</h2>
+        <h2>₹6 crore. 10% equity.</h2>
         <p>
           Build the product. Grow the team. Expand the network. Create the place students
           check before they go out.
         </p>
-        <a className="button button--lime" href="#slide-12">
+        <a className="button button--lime" href="#slide-11">
           Let’s talk
         </a>
       </div>
@@ -575,46 +574,9 @@ function Ask() {
   )
 }
 
-function InvestmentBreakdown() {
-  const listedTotal = investmentAllocations.reduce((sum, item) => sum + item.value, 0)
-
-  return (
-    <InvestorSection number={10} label="Use of funds">
-      <div className="section-intro section-intro--compact">
-        <p className="kicker">Where capital goes</p>
-        <h2>Build what compounds.</h2>
-      </div>
-      <figure className="allocation-figure">
-        <div className="allocation-list">
-          {investmentAllocations.map((item) => (
-            <div className="allocation-row" key={item.label}>
-              <div>
-                <span>{item.label}</span>
-                <strong>{item.value}%</strong>
-              </div>
-              <div
-                className={`allocation-track allocation-track--${item.value}`}
-                aria-hidden="true"
-              >
-                <i />
-              </div>
-            </div>
-          ))}
-        </div>
-        <figcaption>
-          <strong>{listedTotal}% allocated today.</strong>
-          <span>
-            The remaining {100 - listedTotal}% will be finalized before investment.
-          </span>
-        </figcaption>
-      </figure>
-    </InvestorSection>
-  )
-}
-
 function Projections() {
   return (
-    <InvestorSection number={11} label="Five-year outlook" tone="paper">
+    <InvestorSection number={10} label="Five-year outlook" tone="paper">
       <div className="section-intro section-intro--split">
         <p className="kicker">The five-year view</p>
         <h2>Start focused. Scale with momentum.</h2>
@@ -629,11 +591,11 @@ function Projections() {
             <span>Revenue momentum</span>
             <strong>0–100</strong>
           </figcaption>
-          <div className="vertical-chart" aria-hidden="true">
+          <div className="vertical-chart" aria-label="Revenue growth index by year">
             {projectionYears.map((item) => (
               <div key={item.year}>
-                <span>{item.revenueIndex}</span>
-                <i className={`index-height-${item.revenueIndex}`} />
+                <span className="chart-value">{item.revenueIndex}</span>
+                <i className={`index-height-${item.revenueIndex}`} aria-hidden="true" />
                 <b>Y{item.year}</b>
               </div>
             ))}
@@ -644,12 +606,12 @@ function Projections() {
             <span>User momentum</span>
             <strong>0–100</strong>
           </figcaption>
-          <div className="horizontal-chart" aria-hidden="true">
+          <div className="horizontal-chart" aria-label="User growth index by year">
             {projectionYears.map((item) => (
               <div key={item.year}>
                 <b>Y{item.year}</b>
-                <i className={`index-width-${item.userIndex}`} />
-                <span>{item.userIndex}</span>
+                <i className={`index-width-${item.userIndex}`} aria-hidden="true" />
+                <span className="chart-value">{item.userIndex}</span>
               </div>
             ))}
           </div>
@@ -696,10 +658,10 @@ function ContactCard({ founder }: { founder: Founder }) {
 
 function Contact() {
   return (
-    <InvestorSection number={12} label="Contact" tone="lime" className="contact-section">
+    <InvestorSection number={11} label="Contact" tone="lime" className="contact-section">
       <div className="section-intro section-intro--compact">
         <p className="kicker">The next step</p>
-        <h2>Let’s make student life go further.</h2>
+        <h2>Let’s disrupt the market together</h2>
       </div>
       <div className="contact-grid">
         {founders.map((founder) => (
@@ -836,7 +798,6 @@ export default function App() {
         <FounderProfile founder={founders[0]} number={7} />
         <FounderProfile founder={founders[1]} number={8} />
         <Ask />
-        <InvestmentBreakdown />
         <Projections />
         <Contact />
       </main>

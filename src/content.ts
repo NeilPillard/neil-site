@@ -25,7 +25,7 @@ export const navigation: NavigationItem[] = [
   { label: 'Experience', target: 'slide-5' },
   { label: 'Opportunity', target: 'slide-4' },
   { label: 'Investment', target: 'slide-9' },
-  { label: 'Connect', target: 'slide-12' },
+  { label: 'Connect', target: 'slide-11' },
 ]
 
 export const problemStatements = [
@@ -162,11 +162,11 @@ export const founders: Founder[] = [
     image: 'neil',
     email: 'neil.j.pillard@gmail.com',
     phone: '+974 3363 7582',
-    linkedin: 'https://www.linkedin.com/in/neilpilllard',
+    linkedin: 'https://www.linkedin.com/in/neilpillard',
     achievements: [
       'Took ClassMate Qatar from early prototype to launch.',
       'Grew GMV to QAR 10M in 11 months.',
-      'Signed 350+ partnerships in under six months.',
+      'secured 358 partnerships across all categories in under 6 months',
     ],
   },
   {
