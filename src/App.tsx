@@ -9,7 +9,7 @@ import {
   type Founder,
 } from './content'
 
-const totalSections = 11
+const totalSections = 10
 
 type SectionTone = 'wine' | 'ink' | 'lime' | 'paper'
 
@@ -98,7 +98,7 @@ function SiteHeader({ activeSection }: { activeSection: string }) {
             </a>
           ))}
         </nav>
-        <a className="header-cta" href="#slide-11">
+        <a className="header-cta" href="#slide-10">
           Connect
         </a>
       </div>
@@ -132,24 +132,16 @@ function Intro() {
     <InvestorSection number={1} label="Investor overview" className="hero-section">
       <div className="hero-copy">
         <ProofBadge>Created for Students</ProofBadge>
-        <h1>
-          Save on more.
-          <br />
-          Live a little bigger.
-        </h1>
-        <p>
-          One place for verified students to discover better value—and for brands to
-          become part of everyday life.
-        </p>
+        <h1>The Student Ecosystem.</h1>
+        <p>Save. Earn. Learn. Experience it all.</p>
         <div className="hero-actions">
-          <a className="button button--lime" href="#slide-9">
-            See the opportunity
+          <a className="button button--lime" href="#slide-8">
+            The opportunity
           </a>
-          <a className="button button--ghost" href="#slide-11">
-            Meet the founders
+          <a className="button button--ghost" href="#slide-10">
+            The founders
           </a>
         </div>
-        <p className="hero-proof">Verified. Relevant. Ready when students are.</p>
       </div>
       <div className="hero-visual">
         <div className="product-stage" aria-hidden="true" />
@@ -168,7 +160,7 @@ function Problem() {
     <InvestorSection number={2} label="Problem" tone="lime" className="problem-section">
       <div className="section-intro">
         <p className="kicker">The disconnect</p>
-        <h2>Students look for value. Brands look for exposure</h2>
+        <h2>Students look for value. Markets look for exposure</h2>
       </div>
       <ul className="problem-list">
         {problemStatements.map((statement, index) => (
@@ -192,15 +184,15 @@ function Solution() {
     >
       <div className="section-intro">
         <p className="kicker">Meet Kouponly</p>
-        <h2>One app. More student life.</h2>
+        <h2>Student Life. Reimagined.</h2>
         <p className="lede">
-          Students discover offers worth using. Brands reach verified people ready to
-          visit, buy, and come back.
+          One platform that brings savings, opportunities, experiences, skills, and
+          rewards together.
         </p>
         <div className="proof-row" aria-label="Kouponly value proposition">
-          <ProofBadge>Real students</ProofBadge>
-          <ProofBadge>Useful offers</ProofBadge>
-          <ProofBadge>Visible results</ProofBadge>
+          <ProofBadge>Real Students</ProofBadge>
+          <ProofBadge>Real Value</ProofBadge>
+          <ProofBadge>Real Results</ProofBadge>
         </div>
       </div>
       <ProductScreenshot
@@ -231,39 +223,16 @@ function Market() {
           </li>
         ))}
       </ul>
-      <p className="data-note">
-        Management estimates. Supporting sources are available during diligence.
-      </p>
-    </InvestorSection>
-  )
-}
-
-function Journey() {
-  return (
-    <InvestorSection number={5} label="Product journey" className="journey-section">
-      <div className="section-intro section-intro--compact">
-        <p className="kicker">The experience</p>
-        <h2>Verify. Discover. Save.</h2>
-      </div>
-      <figure className="journey-showcase">
-        <img
-          src="/deck-assets/supplied/journey-flow.webp"
-          alt="Kouponly journey from student verification through exploring discounts to redeeming offers"
-        />
-      </figure>
     </InvestorSection>
   )
 }
 
 function Verification() {
   return (
-    <InvestorSection number={6} label="Technology" tone="lime">
+    <InvestorSection number={5} label="Technology" tone="lime">
       <div className="section-intro section-intro--split">
         <p className="kicker">Trust, built in</p>
         <h2>Real students. Real value.</h2>
-        <p className="lede">
-          Simple verification protects every offer—without getting in the student’s way.
-        </p>
       </div>
       <ol className="verification-grid">
         {verificationSteps.map((step, index) => (
@@ -307,15 +276,15 @@ function FounderProfile({ founder, number }: { founder: Founder; number: number 
 
 function Ask() {
   return (
-    <InvestorSection number={9} label="The ask" tone="ink" className="ask-section">
+    <InvestorSection number={8} label="The ask" tone="ink" className="ask-section">
       <div className="ask-ticket">
         <p className="kicker">The seed round</p>
-        <h2>₹6 crore. 10% equity.</h2>
+        <h2>₹10 crore. 10% equity.</h2>
         <p>
           Build the product. Grow the team. Expand the network. Create the place students
           check before they go out.
         </p>
-        <a className="button button--lime" href="#slide-11">
+        <a className="button button--lime" href="#slide-10">
           Let’s talk
         </a>
       </div>
@@ -325,62 +294,78 @@ function Ask() {
 
 function Projections() {
   return (
-    <InvestorSection number={10} label="Five-year outlook" tone="paper">
+    <InvestorSection number={9} label="Five-year outlook" tone="paper">
       <div className="section-intro section-intro--split">
         <p className="kicker">The five-year view</p>
         <h2>Start focused. Scale with momentum.</h2>
         <p className="lede">
-          Relative growth indices, not audited forecasts. Detailed assumptions are
-          available during diligence.
+          Revenue scales from early traction to ₹1,650 Cr by Year 5, driven by increasing
+          market penetration and geographic expansion.
         </p>
       </div>
       <div className="projection-grid">
         <figure>
           <figcaption>
-            <span>Revenue momentum</span>
-            <strong>0–100</strong>
+            <span>Revenue</span>
+            <strong>₹ crore</strong>
           </figcaption>
-          <div className="vertical-chart" aria-label="Revenue growth index by year">
-            {projectionYears.map((item) => (
-              <div key={item.year}>
-                <span className="chart-value">{item.revenueIndex}</span>
-                <i className={`index-height-${item.revenueIndex}`} aria-hidden="true" />
-                <b>Y{item.year}</b>
+          <div className="revenue-chart" aria-label="Revenue in crores (INR) by year">
+            <div className="revenue-chart__axis" aria-hidden="true">
+              {[2000, 1500, 1000, 500, 0].map((value) => (
+                <span key={value}>₹{value.toLocaleString('en-IN')} Cr</span>
+              ))}
+            </div>
+            <div className="revenue-chart__plot">
+              {[2000, 1500, 1000, 500].map((value) => (
+                <i key={value} style={{ top: `${100 - (value / 2000) * 100}%` }} />
+              ))}
+              <div className="revenue-chart__bars">
+                {projectionYears.map((item) => (
+                  <div
+                    key={item.year}
+                    className={`revenue-chart__year revenue-chart__year--${item.year}`}
+                  >
+                    <strong className="revenue-chart__value">
+                      {item.revenueCr === 0 ? 'Minimal' : `₹${item.revenueCr} Cr`}
+                    </strong>
+                    <i
+                      className="revenue-chart__bar"
+                      style={{
+                        height: `${Math.max((item.revenueCr / 2000) * 100, 0.5)}%`,
+                      }}
+                      aria-hidden="true"
+                    />
+                    <span>Year {item.year}</span>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </figure>
-        <figure>
-          <figcaption>
-            <span>User momentum</span>
-            <strong>0–100</strong>
-          </figcaption>
-          <div className="horizontal-chart" aria-label="User growth index by year">
-            {projectionYears.map((item) => (
-              <div key={item.year}>
-                <b>Y{item.year}</b>
-                <i className={`index-width-${item.userIndex}`} aria-hidden="true" />
-                <span className="chart-value">{item.userIndex}</span>
-              </div>
-            ))}
+            </div>
+            <div className="revenue-chart__milestones">
+              {projectionYears.map((item) => (
+                <div key={item.year}>
+                  <strong>Year {item.year}</strong>
+                  <span>{item.outlook}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </figure>
       </div>
       <table className="sr-only">
-        <caption>Illustrative Kouponly growth indices by year</caption>
+        <caption>Illustrative Kouponly revenue outlook by year in crores (INR)</caption>
         <thead>
           <tr>
             <th>Year</th>
-            <th>Revenue index</th>
-            <th>User index</th>
+            <th>Revenue (crores INR)</th>
+            <th>Outlook</th>
           </tr>
         </thead>
         <tbody>
           {projectionYears.map((item) => (
             <tr key={item.year}>
               <td>{item.year}</td>
-              <td>{item.revenueIndex}</td>
-              <td>{item.userIndex}</td>
+              <td>{item.revenueCr}</td>
+              <td>{item.outlook}</td>
             </tr>
           ))}
         </tbody>
@@ -407,7 +392,7 @@ function ContactCard({ founder }: { founder: Founder }) {
 
 function Contact() {
   return (
-    <InvestorSection number={11} label="Contact" tone="lime" className="contact-section">
+    <InvestorSection number={10} label="Contact" tone="lime" className="contact-section">
       <div className="section-intro section-intro--compact">
         <p className="kicker">The next step</p>
         <h2>Let’s disrupt the market together</h2>
@@ -542,10 +527,9 @@ export default function App() {
         <Problem />
         <Solution />
         <Market />
-        <Journey />
         <Verification />
-        <FounderProfile founder={founders[0]} number={7} />
-        <FounderProfile founder={founders[1]} number={8} />
+        <FounderProfile founder={founders[0]} number={6} />
+        <FounderProfile founder={founders[1]} number={7} />
         <Ask />
         <Projections />
         <Contact />

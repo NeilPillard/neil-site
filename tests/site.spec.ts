@@ -6,12 +6,35 @@ test.beforeEach(async ({ page }) => {
 })
 
 test('renders every section without horizontal page overflow', async ({ page }) => {
-  await expect(page.locator('.investor-section')).toHaveCount(11)
+  await expect(page.locator('.investor-section')).toHaveCount(10)
 
   const overflow = await page.evaluate(
     () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
   )
   expect(overflow).toBe(0)
+})
+
+test('keeps Neil’s founder profile readable at every viewport', async ({ page }) => {
+  await page.goto('/#slide-6')
+
+  const profile = page.locator('#slide-6')
+  const content = profile.locator('.section-content')
+  const identity = profile.locator('.founder-profile__identity')
+  const achievements = profile.locator('.achievement-list')
+
+  await expect(identity.getByRole('heading')).toBeVisible()
+  await expect(achievements).toBeVisible()
+
+  const layout = await content.evaluate(
+    (element) => getComputedStyle(element).gridTemplateColumns,
+  )
+  const width = await page.evaluate(() => window.innerWidth)
+
+  if (width <= 840) {
+    expect(layout.split(' ').length).toBe(1)
+  } else {
+    expect(layout.split(' ').length).toBe(2)
+  }
 })
 
 test('keeps hash navigation and contact links functional', async ({ page }) => {
@@ -21,8 +44,8 @@ test('keeps hash navigation and contact links functional', async ({ page }) => {
   }
 
   await page.getByRole('link', { name: 'Experience', exact: true }).click()
-  await expect(page).toHaveURL(/#slide-5$/)
-  await expect(page.locator('#slide-5')).toBeInViewport()
+  await expect(page).toHaveURL(/#slide-3$/)
+  await expect(page.locator('#slide-3')).toBeInViewport()
 
   if (await menuToggle.isVisible()) {
     await menuToggle.click()
@@ -32,7 +55,7 @@ test('keeps hash navigation and contact links functional', async ({ page }) => {
     .getByRole('navigation', { name: 'Investor overview' })
     .getByRole('link', { name: 'Connect', exact: true })
     .click()
-  await expect(page).toHaveURL(/#slide-11$/)
+  await expect(page).toHaveURL(/#slide-10$/)
   await expect(
     page.getByRole('link', { name: 'neil.j.pillard@gmail.com' }),
   ).toHaveAttribute('href', 'mailto:neil.j.pillard@gmail.com')

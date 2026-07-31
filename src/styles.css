@@ -2,10 +2,16 @@
   color: #fff;
   background: #1d0306;
   font-family:
-    -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue',
+    'Geist Variable',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Helvetica Neue',
     sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
+  --font-sans:
+    'Geist Variable', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  --font-mono: 'DM Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
   --wine: #650b13;
   --wine-bright: #7a111c;
   --ink: #1d0306;
@@ -37,6 +43,8 @@ body {
   margin: 0;
   overflow-x: hidden;
   background: var(--ink);
+  font-family: var(--font-sans);
+  line-height: 1.45;
 }
 
 body,
@@ -607,7 +615,7 @@ h3 {
 }
 
 .problem-list p {
-  font-size: clamp(1.18rem, 1.8vw, 1.55rem);
+  font-size: clamp(1.35rem, 2.1vw, 1.85rem);
   font-weight: 650;
   line-height: 1.28;
   letter-spacing: -0.03em;
@@ -618,6 +626,10 @@ h3 {
   grid-template-columns: minmax(0, 1.15fr) minmax(360px, 0.85fr);
   align-items: center;
   gap: clamp(50px, 10vw, 150px);
+}
+
+.solution-section .kicker {
+  font-size: clamp(1rem, 1.45vw, 1.25rem);
 }
 
 .solution-section .lede {
@@ -1142,16 +1154,16 @@ h3 {
 
 .projection-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: clamp(28px, 5vw, 64px);
   margin-top: clamp(60px, 8vw, 104px);
 }
 
 .projection-grid figure {
-  padding: clamp(24px, 4vw, 40px);
+  padding: clamp(28px, 5vw, 52px);
   color: #fff;
-  background: #000;
-  border-radius: 20px;
+  background: var(--wine);
+  border-radius: 0;
 }
 
 .projection-grid figcaption {
@@ -1166,6 +1178,133 @@ h3 {
 
 .projection-grid figcaption strong {
   color: var(--lime);
+}
+
+.revenue-chart {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: clamp(12px, 2vw, 24px);
+  margin-top: 42px;
+}
+
+.revenue-chart__axis {
+  height: clamp(300px, 42vw, 560px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-bottom: 30px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: clamp(0.72rem, 1.4vw, 1.15rem);
+  white-space: nowrap;
+}
+
+.revenue-chart__plot {
+  position: relative;
+  height: clamp(300px, 42vw, 560px);
+  border-bottom: 2px solid var(--lime);
+}
+
+.revenue-chart__plot > i {
+  position: absolute;
+  right: 0;
+  left: 0;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.revenue-chart__bars {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  align-items: end;
+  gap: clamp(12px, 3vw, 34px);
+}
+
+.revenue-chart__bars > div {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: end;
+  gap: 12px;
+  min-width: 0;
+}
+
+.revenue-chart__year--1 .revenue-chart__bar {
+  background: var(--rose);
+}
+
+.revenue-chart__year--2 .revenue-chart__bar {
+  background: #e5c8ae;
+}
+
+.revenue-chart__year--3 .revenue-chart__bar {
+  background: #e4ed9e;
+}
+
+.revenue-chart__year--4 .revenue-chart__bar {
+  background: #d0f576;
+}
+
+.revenue-chart__year--5 .revenue-chart__bar {
+  background: var(--lime);
+}
+
+.revenue-chart__value {
+  min-height: 1.4em;
+  color: var(--lime);
+  font-size: clamp(0.72rem, 1.35vw, 1.05rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.revenue-chart__bar {
+  display: block;
+  width: 100%;
+  min-height: 4px;
+  background: var(--lime);
+  border-radius: 22px 22px 0 0;
+}
+
+.revenue-chart__bars span {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: clamp(0.72rem, 1.5vw, 1.15rem);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.revenue-chart__milestones {
+  grid-column: 2;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(12px, 3vw, 34px);
+  margin-top: 20px;
+}
+
+.revenue-chart__milestones > div {
+  min-width: 0;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: clamp(0.66rem, 1.1vw, 0.9rem);
+  line-height: 1.35;
+  text-align: center;
+}
+
+.revenue-chart__milestones strong,
+.revenue-chart__milestones span {
+  display: block;
+}
+
+.revenue-chart__milestones strong {
+  margin-bottom: 4px;
+  color: var(--lime);
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .vertical-chart {
@@ -1464,6 +1603,7 @@ h3 {
   }
 
   .hero-visual {
+    display: none;
     min-height: 580px;
     margin-top: 18px;
   }

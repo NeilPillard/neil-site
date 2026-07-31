@@ -3,11 +3,11 @@ import { describe, expect, it } from 'vitest'
 import App from './App'
 
 describe('Kouponly investor overview', () => {
-  it('renders the complete 11-section narrative with stable deep links', () => {
+  it('renders the complete 10-section narrative with stable deep links', () => {
     const { container } = render(<App />)
     const sections = container.querySelectorAll('.investor-section')
 
-    expect(sections).toHaveLength(11)
+    expect(sections).toHaveLength(10)
     sections.forEach((section, index) => {
       expect(section).toHaveAttribute('id', `slide-${index + 1}`)
     })
@@ -17,9 +17,25 @@ describe('Kouponly investor overview', () => {
     render(<App />)
 
     expect(screen.queryByText(/Tcke/i)).not.toBeInTheDocument()
-    expect(screen.getAllByText(/management estimates/i).length).toBeGreaterThan(0)
+    expect(
+      screen.queryByText(
+        'Management estimates. Supporting sources are available during diligence.',
+      ),
+    ).not.toBeInTheDocument()
     expect(screen.queryByText(/allocated today/i)).not.toBeInTheDocument()
-    expect(screen.getByText(/relative growth indices/i)).toBeInTheDocument()
+    expect(
+      screen.getByText(
+        'Revenue scales from early traction to ₹1,650 Cr by Year 5, driven by increasing market penetration and geographic expansion.',
+      ),
+    ).toBeInTheDocument()
+    expect(screen.getByText('1650')).toBeInTheDocument()
+    expect(screen.getAllByText('Early launch / market entry')).toHaveLength(2)
+    expect(screen.getAllByText('Large-scale market penetration')).toHaveLength(2)
+    expect(
+      screen.getByText(
+        'Built a 350+ partner network across multiple industries in Qatar within the first year.',
+      ),
+    ).toBeInTheDocument()
   })
 
   it('keeps direct founder contact routes accessible', () => {

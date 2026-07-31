@@ -10,6 +10,87 @@
   --section-space: clamp(88px, 10vw, 148px);
 }
 
+/* Active editorial type system: Geist carries the pitch, DM Mono carries metadata. */
+body,
+button,
+input,
+textarea,
+select {
+  font-family: var(--font-sans);
+}
+
+h1,
+h2,
+h3,
+.brand,
+.button,
+.header-cta,
+.metric-card strong {
+  font-family: var(--font-sans);
+  font-variation-settings: 'opsz' 14;
+}
+
+h1,
+h2,
+h3,
+p,
+li,
+figcaption,
+td,
+th {
+  overflow-wrap: break-word;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+p,
+li,
+figcaption,
+td,
+th {
+  text-wrap: pretty;
+}
+
+.kicker,
+.data-note,
+.hero-proof,
+.section-header,
+.proof-badge,
+.projection-grid figcaption,
+.vertical-chart span,
+.vertical-chart b,
+.horizontal-chart span,
+.horizontal-chart b,
+.site-footer {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.section-header,
+.kicker,
+.proof-badge,
+.projection-grid figcaption {
+  letter-spacing: 0.08em;
+}
+
+.lede,
+.hero-copy > p:not(.hero-proof),
+.ask-ticket > p:not(.kicker),
+.metric-card p,
+.verification-grid li > p:last-child,
+.contact-card > a,
+.site-footer {
+  text-wrap: pretty;
+}
+
+.section-content > * {
+  min-width: 0;
+}
+
 html {
   scroll-padding-top: calc(var(--header-height) + 12px);
 }
@@ -144,13 +225,13 @@ h2 {
 .hero-section .section-content {
   grid-template-columns: minmax(0, 1.08fr) minmax(340px, 0.72fr);
   gap: clamp(28px, 5vw, 78px);
-  padding-top: clamp(28px, 4vh, 52px);
+  padding-top: clamp(14px, 2vh, 30px);
 }
 
 .hero-copy h1 {
   max-width: 760px;
   margin-top: 26px;
-  font-size: clamp(3.6rem, 6.5vw, 6.7rem);
+  font-size: clamp(4.4rem, 8.5vw, 8.8rem);
   font-weight: 700;
   line-height: 0.91;
 }
@@ -523,6 +604,41 @@ h2 {
   background: transparent;
 }
 
+/* Keep the market story as a single, compact read instead of three distant blocks. */
+#slide-4 .section-content {
+  padding-top: clamp(42px, 5vw, 64px);
+}
+
+#slide-4 .section-intro--split {
+  column-gap: clamp(28px, 4vw, 64px);
+  row-gap: clamp(20px, 2vw, 30px);
+}
+
+#slide-4 .section-intro--split .kicker {
+  margin-bottom: 0;
+}
+
+#slide-4 .metric-grid {
+  gap: clamp(20px, 3vw, 40px);
+  margin-top: clamp(72px, 8vw, 132px);
+}
+
+#slide-4 .metric-card {
+  min-height: clamp(190px, 18vw, 240px);
+}
+
+#slide-4 .metric-card b {
+  margin-top: clamp(14px, 1.5vw, 22px);
+}
+
+#slide-4 .metric-card p {
+  margin-top: 8px;
+}
+
+#slide-4 .data-note {
+  margin-top: 16px;
+}
+
 .journey-grid {
   gap: 18px;
 }
@@ -551,6 +667,76 @@ h2 {
 .projection-grid figure,
 .contact-card {
   border-radius: 20px;
+}
+
+/* Founder profiles read as one compact story: portrait and remit on the left,
+   proof points on the right. Avoid a display headline competing with its column. */
+.founder-profile .section-content {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(40px, 5vw, 76px);
+}
+
+.founder-profile__identity {
+  display: contents;
+}
+
+.founder-profile__identity img {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.founder-profile__identity > div {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  margin-top: 0;
+  margin-bottom: clamp(28px, 3vw, 48px);
+}
+
+.founder-profile .achievement-list {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.founder-profile h2 {
+  max-width: none;
+  font-size: clamp(2.7rem, 3vw, 3.75rem);
+  line-height: 0.96;
+}
+
+@media (max-width: 840px) {
+  .founder-profile .section-content {
+    grid-template-columns: 1fr;
+    gap: 42px;
+  }
+
+  .founder-profile__identity {
+    display: grid;
+    grid-template-columns: 160px minmax(0, 1fr);
+    align-items: center;
+    gap: 24px;
+  }
+
+  .founder-profile__identity img,
+  .founder-profile__identity > div,
+  .founder-profile .achievement-list {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .founder-profile__identity > div {
+    margin-top: 0;
+  }
+
+  .founder-profile h2 {
+    max-width: none;
+    font-size: clamp(2.2rem, 8vw, 3.5rem);
+  }
+}
+
+@media (max-width: 520px) {
+  .founder-profile h2 {
+    font-size: clamp(1.9rem, 8.7vw, 2.8rem);
+  }
 }
 
 .detail-card {
@@ -589,7 +775,7 @@ h2 {
 
 .ask-ticket h2 {
   max-width: 980px;
-  font-size: clamp(3.4rem, 6.4vw, 5.8rem);
+  font-size: clamp(3.6rem, 7.4vw, 7rem);
 }
 
 .allocation-track {
@@ -629,7 +815,7 @@ h2 {
   }
 
   .hero-copy h1 {
-    font-size: clamp(3.5rem, 7.4vw, 5.5rem);
+    font-size: clamp(4.2rem, 8.6vw, 6.4rem);
   }
 
   .hero-visual {
@@ -752,7 +938,7 @@ h2 {
   }
 
   .hero-copy h1 {
-    font-size: clamp(3.35rem, 16vw, 5.2rem);
+    font-size: clamp(3.9rem, 18.5vw, 6.2rem);
   }
 
   .hero-actions {
@@ -816,7 +1002,7 @@ h2 {
   }
 
   .hero-copy h1 {
-    font-size: clamp(3rem, 15.5vw, 4rem);
+    font-size: clamp(3.4rem, 17.5vw, 4.7rem);
   }
 
   .hero-visual {

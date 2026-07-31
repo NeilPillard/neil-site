@@ -22,16 +22,16 @@ export type Founder = {
 }
 
 export const navigation: NavigationItem[] = [
-  { label: 'Experience', target: 'slide-5' },
+  { label: 'Experience', target: 'slide-3' },
   { label: 'Opportunity', target: 'slide-4' },
-  { label: 'Investment', target: 'slide-9' },
-  { label: 'Connect', target: 'slide-11' },
+  { label: 'Investment', target: 'slide-8' },
+  { label: 'Connect', target: 'slide-10' },
 ]
 
 export const problemStatements = [
-  'Student life costs more every year.',
-  'Brands spend more to earn less Gen Z attention.',
-  'The offers students need are scattered, generic, and hard to trust.',
+  'Students have FOMO.',
+  'Brands lack a unified student platform.',
+  'No platform connects the two.',
 ]
 
 export const marketStats = [
@@ -49,24 +49,6 @@ export const marketStats = [
     value: 'Weekly',
     label: 'Every week',
     note: 'Discovery, decisions, and spending happen repeatedly.',
-  },
-]
-
-export const journeySteps = [
-  {
-    title: 'Student verification',
-    copy: 'Confirm eligibility through a student email or supporting document.',
-    image: 'journey' as const,
-  },
-  {
-    title: 'Explore discounts',
-    copy: 'Discover relevant, local offers designed around student life.',
-    image: 'solution' as const,
-  },
-  {
-    title: 'Redeem offers',
-    copy: 'Use a verified offer and give brands measurable engagement.',
-    image: 'journey' as const,
   },
 ]
 
@@ -164,9 +146,9 @@ export const founders: Founder[] = [
     phone: '+974 3363 7582',
     linkedin: 'https://www.linkedin.com/in/neilpillard',
     achievements: [
-      'Took ClassMate Qatar from early prototype to launch.',
-      'Grew GMV to QAR 10M in 11 months.',
-      'secured 358 partnerships across all categories in under 6 months',
+      'Scaled ClassMate App Qatar from concept to a live platform.',
+      'Drove QAR 10M+ in GMV within the first year.',
+      'Built a 350+ partner network across multiple industries in Qatar within the first year.',
     ],
   },
   {
@@ -174,16 +156,15 @@ export const founders: Founder[] = [
     name: 'Aazam Thakur',
     fullName: 'Aazam Thakur',
     role: 'Co-founder, Technology',
-    focus: 'Full-stack engineering, open source, and AI research',
+    focus: 'Engineering, Product and Design',
     image: 'aazam',
     email: 'aazamthakur@gmail.com',
-    phone: '+974 70450340',
+    phone: '+974 7045 0340',
     linkedin: 'https://www.linkedin.com/in/aazam-ln',
     achievements: [
-      'Designed and built the RealX mobile and web ecosystem.',
-      'Technical maintainer for Open Mainframe at the Linux Foundation.',
-      'Contributed to data engineering at Airbyte.',
-      'Selected for Google Summer of Code in AI research.',
+      'Designed and Developed the entier technical ecosystem of RealX (Mobile + Web Applications)',
+      'OpenMainframe Technical Maintainer (Linux Foundation - 300M ARR)',
+      'Previous OSS Contributor Data Engineering - Airbyte (YC 20 Winter Batch - 20M ARR)',
     ],
   },
 ]
@@ -196,9 +177,9 @@ export const investmentAllocations = [
 ]
 
 export const projectionYears = [
-  { year: 1, revenueIndex: 5, userIndex: 2 },
-  { year: 2, revenueIndex: 7, userIndex: 5 },
-  { year: 3, revenueIndex: 25, userIndex: 18 },
-  { year: 4, revenueIndex: 48, userIndex: 48 },
-  { year: 5, revenueIndex: 86, userIndex: 92 },
+  { year: 1, revenueCr: 0, outlook: 'Early launch / market entry' },
+  { year: 2, revenueCr: 80, outlook: 'Initial traction' },
+  { year: 3, revenueCr: 330, outlook: 'Significant growth' },
+  { year: 4, revenueCr: 830, outlook: 'Accelerated expansion' },
+  { year: 5, revenueCr: 1650, outlook: 'Large-scale market penetration' },
 ]
