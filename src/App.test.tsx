@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import App from './App'
 
 describe('Kouponly investor overview', () => {
@@ -48,6 +48,14 @@ describe('Kouponly investor overview', () => {
       'href',
       'mailto:aazamthakur@gmail.com',
     )
+    expect(screen.getAllByRole('link', { name: 'info@kouponly.in' })).not.toHaveLength(0)
+    expect(
+      screen.getByRole('link', { name: 'View Neil Jose Pillard on LinkedIn' }),
+    ).toHaveAttribute('href', 'https://www.linkedin.com/in/neilpillard')
+    expect(screen.getByRole('link', { name: 'Waitlist' })).toHaveAttribute(
+      'href',
+      '/waitlist',
+    )
   })
 
   it('exposes one primary heading and a skip link', () => {
@@ -57,5 +65,35 @@ describe('Kouponly investor overview', () => {
     expect(
       screen.getByRole('link', { name: 'Skip to investor overview' }),
     ).toHaveAttribute('href', '#main-content')
+  })
+
+  it('renders the waitlist route with the exact live count', async () => {
+    window.history.replaceState(null, '', '/waitlist')
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({ count: 1234 }),
+      }),
+    )
+
+    render(<App />)
+
+    expect(await screen.findByText('1,234')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Save your spot.' })).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { name: 'Your next student essential.' }),
+    ).toBeInTheDocument()
+    expect(screen.getByRole('textbox', { name: 'Your name' })).toBeRequired()
+    expect(screen.getByRole('textbox', { name: /Mobile number/i })).toBeRequired()
+    expect(screen.getByRole('textbox', { name: /Instagram handle/i })).toBeRequired()
+    expect(screen.getByRole('combobox', { name: 'Country code' })).toHaveValue('IN')
+    expect(screen.getByRole('link', { name: '@kouponly' })).toHaveAttribute(
+      'href',
+      'https://www.instagram.com/kouponly/',
+    )
+
+    vi.unstubAllGlobals()
+    window.history.replaceState(null, '', '/')
   })
 })

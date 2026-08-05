@@ -1,7 +1,6 @@
-export type NavigationItem = {
-  label: string
-  target: `slide-${number}`
-}
+export type NavigationItem =
+  | { label: string; target: `slide-${number}`; href?: never }
+  | { label: string; href: `/${string}`; target?: never }
 
 export type DetailItem = {
   title: string
@@ -26,6 +25,7 @@ export const navigation: NavigationItem[] = [
   { label: 'Opportunity', target: 'slide-4' },
   { label: 'Investment', target: 'slide-8' },
   { label: 'Connect', target: 'slide-10' },
+  { label: 'Waitlist', href: '/waitlist' },
 ]
 
 export const problemStatements = [

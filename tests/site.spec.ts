@@ -78,3 +78,27 @@ test('respects reduced motion', async ({ page }) => {
 
   expect(['0s', '0.00001s', '1e-05s']).toContain(animationDuration)
 })
+
+test('renders the dedicated waitlist page and required form fields', async ({ page }) => {
+  await page.goto('/waitlist')
+
+  await expect(
+    page.getByRole('heading', { name: 'Your next student essential.' }),
+  ).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Save your spot.' })).toBeVisible()
+  await expect(page.getByRole('textbox', { name: 'Your name' })).toHaveAttribute(
+    'required',
+    '',
+  )
+  await expect(page.getByRole('textbox', { name: 'Email address' })).toHaveAttribute(
+    'required',
+    '',
+  )
+  await expect(page.getByRole('textbox', { name: /Mobile number/i })).toHaveAttribute(
+    'required',
+    '',
+  )
+  await expect(page.getByRole('combobox', { name: 'Country code' })).toBeVisible()
+  await page.getByRole('combobox', { name: 'Country code' }).selectOption('QA')
+  await expect(page.getByRole('combobox', { name: 'Country code' })).toHaveValue('QA')
+})

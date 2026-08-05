@@ -1,0 +1,14 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "kouponly-web-pitch-deck",
+  "pages_build_output_dir": "./dist",
+  "compatibility_date": "2026-08-02",
+  "d1_databases": [
+    {
+      "binding": "WAITLIST_DB",
+      "database_name": "kouponly-waitlist",
+      "database_id": "000b6efa-c4a4-49c7-a13f-d024f7def4d1",
+      "migrations_dir": "./migrations",
+    },
+  ],
+}
