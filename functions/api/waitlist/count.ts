@@ -15,7 +15,7 @@ export const onRequestGet: PagesFunction<Env> = async ({ env }) => {
   }
 
   const result = await env.WAITLIST_DB.prepare(
-    'SELECT COUNT(*) AS count FROM waitlist_entries',
+    "SELECT value AS count FROM waitlist_stats WHERE metric = 'total'",
   ).first<CountRow>()
 
   return Response.json(

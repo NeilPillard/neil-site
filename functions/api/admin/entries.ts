@@ -56,7 +56,7 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
       .bind(limit, offset)
       .all<Entry>()
     count = await env.WAITLIST_DB.prepare(
-      'SELECT COUNT(*) AS count FROM waitlist_entries',
+      "SELECT value AS count FROM waitlist_stats WHERE metric = 'total'",
     ).first<{ count?: number }>()
   } catch {
     return response({ message: 'Unable to load waitlist entries.' }, 500)
