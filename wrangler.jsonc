@@ -11,22 +11,4 @@
       "migrations_dir": "./migrations",
     },
   ],
-  "ratelimits": [
-    {
-      "name": "WAITLIST_IP_RATE_LIMITER",
-      "namespace_id": "26080601",
-      "simple": {
-        "limit": 60,
-        "period": 60,
-      },
-    },
-    {
-      "name": "WAITLIST_EMAIL_RATE_LIMITER",
-      "namespace_id": "26080602",
-      "simple": {
-        "limit": 5,
-        "period": 60,
-      },
-    },
-  ],
 }

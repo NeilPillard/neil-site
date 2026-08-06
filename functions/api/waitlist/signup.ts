@@ -4,8 +4,6 @@ import { retryOperation } from '../../../src/lib/retry'
 type Env = {
   WAITLIST_DB?: D1Database
   TURNSTILE_SECRET_KEY?: string
-  WAITLIST_IP_RATE_LIMITER?: RateLimit
-  WAITLIST_EMAIL_RATE_LIMITER?: RateLimit
 }
 
 type CountRow = {
@@ -21,10 +19,6 @@ type SignupPayload = {
   turnstileToken?: unknown
 }
 
-type RateLimit = {
-  limit(options: { key: string }): Promise<{ success: boolean }>
-}
-
 type InsertResult = {
   meta: { changes?: number }
 }
@@ -38,37 +32,6 @@ function response(
     status,
     headers: { 'Cache-Control': 'no-store', ...headers },
   })
-}
-
-function rateLimitedResponse(): Response {
-  return response(
-    { message: 'Too many attempts. Please wait a minute and try again.' },
-    429,
-    { 'Retry-After': '60' },
-  )
-}
-
-async function isRateLimited(
-  limiter: RateLimit | undefined,
-  key: string | null,
-): Promise<boolean> {
-  if (!limiter || !key) return false
-
-  try {
-    const result = await limiter.limit({ key })
-    return !result.success
-  } catch {
-    // Turnstile still protects the endpoint if the rate-limiting service is unavailable.
-    return false
-  }
-}
-
-async function rateLimitKey(prefix: string, value: string): Promise<string> {
-  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value))
-  const hash = Array.from(new Uint8Array(digest), (byte) =>
-    byte.toString(16).padStart(2, '0'),
-  ).join('')
-  return `${prefix}:${hash}`
 }
 
 async function getWaitlistCount(database: D1Database): Promise<number | null> {
@@ -97,16 +60,6 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
 
   if (typeof payload.website === 'string' && payload.website.trim()) {
     return response({ message: 'Unable to submit this form.' }, 400)
-  }
-
-  const clientIp = request.headers.get('CF-Connecting-IP')
-  if (
-    await isRateLimited(
-      env.WAITLIST_IP_RATE_LIMITER,
-      clientIp ? await rateLimitKey('signup-ip', clientIp) : null,
-    )
-  ) {
-    return rateLimitedResponse()
   }
 
   if (
@@ -166,15 +119,6 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       { message: 'Complete the verification before joining the waitlist.' },
       400,
     )
-  }
-
-  if (
-    await isRateLimited(
-      env.WAITLIST_EMAIL_RATE_LIMITER,
-      await rateLimitKey('signup-email', validated.value.email),
-    )
-  ) {
-    return rateLimitedResponse()
   }
 
   let inserted: InsertResult
