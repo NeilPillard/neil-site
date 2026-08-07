@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 import App from './App'
 
@@ -88,11 +88,64 @@ describe('Kouponly investor overview', () => {
     expect(screen.getByRole('textbox', { name: /Mobile number/i })).toBeRequired()
     expect(screen.getByRole('textbox', { name: /Instagram handle/i })).toBeRequired()
     expect(screen.getByRole('combobox', { name: 'Country code' })).toHaveValue('IN')
+    expect(
+      screen.getByRole('button', { name: 'Waiting for verification…' }),
+    ).toBeDisabled()
+    expect(screen.getByText('Checking verification…')).toBeInTheDocument()
     expect(screen.getByRole('link', { name: '@kouponly' })).toHaveAttribute(
       'href',
       'https://www.instagram.com/kouponly/',
     )
 
+    vi.unstubAllGlobals()
+    window.history.replaceState(null, '', '/')
+  })
+
+  it('enables waitlist signup only after verification succeeds', async () => {
+    window.history.replaceState(null, '', '/waitlist')
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({ count: 1234 }),
+      }),
+    )
+
+    let verificationCallback: ((token: string) => void) | undefined
+    let verificationErrorCallback: (() => void) | undefined
+    const resetTurnstile = vi.fn()
+    window.turnstile = {
+      render: (_container, options) => {
+        verificationCallback = options.callback
+        verificationErrorCallback = options['error-callback']
+        return 'widget-1'
+      },
+      remove: vi.fn(),
+      reset: resetTurnstile,
+    }
+
+    render(<App />)
+
+    expect(
+      screen.getByRole('button', { name: 'Waiting for verification…' }),
+    ).toBeDisabled()
+
+    await act(async () => verificationErrorCallback?.())
+
+    expect(
+      screen.getByText(
+        'Verification could not load. Check your connection or privacy blocker.',
+      ),
+    ).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Retry verification' }))
+    expect(resetTurnstile).toHaveBeenCalledWith('widget-1')
+
+    await act(async () => verificationCallback?.('verified-token'))
+
+    expect(screen.getByText('Verification complete.')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Join the waitlist' })).toBeEnabled()
+
+    delete window.turnstile
     vi.unstubAllGlobals()
     window.history.replaceState(null, '', '/')
   })

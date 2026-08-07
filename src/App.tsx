@@ -21,7 +21,7 @@ declare global {
           sitekey: string
           callback: (token: string) => void
           'expired-callback': () => void
-          'error-callback': () => void
+          'error-callback': (errorCode?: string) => void
         },
       ) => string
       remove: (widgetId: string) => void
@@ -459,6 +459,7 @@ function SiteFooter() {
 }
 
 type WaitlistStatus = 'idle' | 'submitting' | 'success' | 'error'
+type TurnstileStatus = 'loading' | 'ready' | 'error'
 type AdminStatus = 'idle' | 'submitting' | 'error'
 
 type WaitlistEntry = {
@@ -512,6 +513,7 @@ function WaitlistPage() {
   const [status, setStatus] = useState<WaitlistStatus>('idle')
   const [message, setMessage] = useState('')
   const [turnstileToken, setTurnstileToken] = useState('')
+  const [turnstileStatus, setTurnstileStatus] = useState<TurnstileStatus>('loading')
   const [selectedCountry, setSelectedCountry] = useState(countries[0])
   const [localPhone, setLocalPhone] = useState('')
   const turnstileContainerRef = useRef<HTMLDivElement>(null)
@@ -548,9 +550,19 @@ function WaitlistPage() {
       if (!window.turnstile || widgetId) return
       widgetId = window.turnstile.render(widgetContainer, {
         sitekey: TURNSTILE_SITE_KEY,
-        callback: setTurnstileToken,
-        'expired-callback': () => setTurnstileToken(''),
-        'error-callback': () => setTurnstileToken(''),
+        callback: (token) => {
+          setTurnstileToken(token)
+          setTurnstileStatus('ready')
+        },
+        'expired-callback': () => {
+          setTurnstileToken('')
+          setTurnstileStatus('loading')
+          if (widgetId) window.turnstile?.reset(widgetId)
+        },
+        'error-callback': () => {
+          setTurnstileToken('')
+          setTurnstileStatus('error')
+        },
       })
       turnstileWidgetIdRef.current = widgetId
     }
@@ -558,16 +570,19 @@ function WaitlistPage() {
     let script = document.querySelector<HTMLScriptElement>(
       'script[src^="https://challenges.cloudflare.com/turnstile/"]',
     )
+    const handleScriptError = () => setTurnstileStatus('error')
     if (window.turnstile) {
       render()
     } else if (script) {
       script.addEventListener('load', render)
+      script.addEventListener('error', handleScriptError, { once: true })
     } else {
       script = document.createElement('script')
       script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'
       script.async = true
       script.defer = true
       script.addEventListener('load', render)
+      script.addEventListener('error', handleScriptError, { once: true })
       document.head.append(script)
     }
 
@@ -577,9 +592,20 @@ function WaitlistPage() {
         turnstileWidgetIdRef.current = null
       }
       script?.removeEventListener('load', render)
+      script?.removeEventListener('error', handleScriptError)
       widgetContainer.remove()
     }
   }, [])
+
+  const retryVerification = () => {
+    setTurnstileToken('')
+    setTurnstileStatus('loading')
+    if (turnstileWidgetIdRef.current && window.turnstile) {
+      window.turnstile.reset(turnstileWidgetIdRef.current)
+    } else {
+      window.location.reload()
+    }
+  }
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -589,7 +615,7 @@ function WaitlistPage() {
 
     if (!turnstileToken) {
       setStatus('error')
-      setMessage('Complete the verification before joining the waitlist.')
+      setMessage('Verification is still loading. Please wait a moment and try again.')
       return
     }
 
@@ -612,11 +638,18 @@ function WaitlistPage() {
       const data = (await response.json()) as { count?: unknown; message?: unknown }
 
       if (!response.ok) {
+        setTurnstileToken('')
+        setTurnstileStatus('loading')
+        if (turnstileWidgetIdRef.current) {
+          window.turnstile?.reset(turnstileWidgetIdRef.current)
+        }
         setStatus('error')
         setMessage(
-          typeof data.message === 'string'
-            ? data.message
-            : 'Unable to join the waitlist.',
+          data.message === 'Complete the verification before joining the waitlist.'
+            ? 'Verification expired. It has been refreshed—please try again.'
+            : typeof data.message === 'string'
+              ? data.message
+              : 'Unable to join the waitlist.',
         )
         return
       }
@@ -626,12 +659,18 @@ function WaitlistPage() {
       setLocalPhone('')
       setSelectedCountry(countries[0])
       setTurnstileToken('')
+      setTurnstileStatus('loading')
       if (turnstileWidgetIdRef.current) {
         window.turnstile?.reset(turnstileWidgetIdRef.current)
       }
       setStatus('success')
       setMessage('You’re on the list. We’ll be in touch soon.')
     } catch {
+      setTurnstileToken('')
+      setTurnstileStatus('loading')
+      if (turnstileWidgetIdRef.current) {
+        window.turnstile?.reset(turnstileWidgetIdRef.current)
+      }
       setStatus('error')
       setMessage('We could not reach the waitlist right now. Please try again.')
     }
@@ -746,13 +785,35 @@ function WaitlistPage() {
               />
               <small>Enter it without the @ sign.</small>
             </label>
-            <div className="waitlist-form__turnstile" ref={turnstileContainerRef} />
+            <div className="waitlist-form__verification">
+              <div className="waitlist-form__turnstile" ref={turnstileContainerRef} />
+              <p className="waitlist-form__verification-status" aria-live="polite">
+                {turnstileStatus === 'ready'
+                  ? 'Verification complete.'
+                  : turnstileStatus === 'error'
+                    ? 'Verification could not load. Check your connection or privacy blocker.'
+                    : 'Checking verification…'}
+              </p>
+              {turnstileStatus === 'error' ? (
+                <button
+                  className="waitlist-form__verification-retry"
+                  type="button"
+                  onClick={retryVerification}
+                >
+                  Retry verification
+                </button>
+              ) : null}
+            </div>
             <button
               className="waitlist-form__submit"
               type="submit"
-              disabled={status === 'submitting'}
+              disabled={status === 'submitting' || turnstileStatus !== 'ready'}
             >
-              {status === 'submitting' ? 'Joining waitlist…' : 'Join the waitlist'}
+              {status === 'submitting'
+                ? 'Joining waitlist…'
+                : turnstileStatus === 'ready'
+                  ? 'Join the waitlist'
+                  : 'Waiting for verification…'}
             </button>
             <p className="waitlist-form__notice">
               We use your details to contact you about the giveaway and Kouponly launch
