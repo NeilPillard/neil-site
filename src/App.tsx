@@ -1012,6 +1012,24 @@ function EcosystemSection({
 }
 
 function StudentHome() {
+  useEffect(() => {
+    const sections = document.querySelectorAll<HTMLElement>('.student-home .ecosystem-section')
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-revealed')
+            observer.unobserve(entry.target)
+          }
+        })
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -8% 0px' },
+    )
+
+    sections.forEach((section) => observer.observe(section))
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <div className="student-home">
       <a className="skip-link" href="#main-content">
@@ -1021,51 +1039,57 @@ function StudentHome() {
         <a className="student-header__logo" href="#slide-1" aria-label="Kouponly home">
           <Brand dark />
         </a>
-        <nav aria-label="Kouponly overview">
+        <nav className="student-header__nav" id="student-navigation" aria-label="Kouponly overview">
           {navigation.slice(0, 4).map((item) => (
             <a key={item.label} href={item.href ?? `#${item.target}`}>
               {item.label}
             </a>
           ))}
         </nav>
-        <a className="student-header__cta" href="/waitlist">
-          Join the waitlist <span aria-hidden="true">↗</span>
-        </a>
+        <div className="student-header__actions">
+          <a className="student-header__cta" href="/waitlist">
+            Join the waitlist <span aria-hidden="true">↗</span>
+          </a>
+        </div>
       </header>
 
       <main id="main-content">
         <EcosystemSection number={1} label="The student super-app" className="ecosystem-hero">
           <div className="ecosystem-hero__copy">
-            <p className="eyebrow">Built around your student life</p>
-            <h1>Everything you need to <em>move forward.</em></h1>
+            <p className="eyebrow">The super-app for students</p>
+            <h1>Your student life, <em>in one place.</em></h1>
             <p className="ecosystem-hero__lede">
-              Save on the things you already do. Discover what’s next. Turn your talent
-              into opportunity.
+              Save on what you already do. Find what’s next. Earn from what you know.
+              Grow into what’s next.
             </p>
             <a className="ecosystem-button" href="/waitlist">
-              Get early access <span aria-hidden="true">↗</span>
+              Be first in line <span aria-hidden="true">↗</span>
             </a>
-            <p className="ecosystem-note"><span aria-hidden="true">●</span> Made for students, by people who get it.</p>
+            <p className="ecosystem-note"><span aria-hidden="true">●</span> Launching in India · Built around real student life.</p>
           </div>
           <div className="ecosystem-hero__visual" aria-label="Preview of the Kouponly student app">
             <span className="hero-orbit hero-orbit--one" aria-hidden="true" />
             <span className="hero-orbit hero-orbit--two" aria-hidden="true" />
-            <div className="hero-sticker hero-sticker--top">YOUR NEXT MOVE <span>✳</span></div>
-            <img src="/deck-assets/supplied/discovery-transparent.webp" alt="Kouponly home screen showing deals, experiences and growth opportunities" />
-            <div className="hero-sticker hero-sticker--bottom">SAVE · EARN · GROW</div>
+            <img className="hero-phone-image" src="/deck-assets/supplied/hero-phone.png" alt="Kouponly home screen showing deals, experiences and growth opportunities" />
+          </div>
+          <div className="ecosystem-proof-strip" aria-label="Student opportunity in India">
+            <div><strong>109.8M</strong><span>students across classes 9–12 and higher education</span></div>
+            <div><strong>46%</strong><span>of consumer spending influenced by Gen Z</span></div>
+            <div><strong>10.2%</strong><span>youth unemployment rate among 15–29 year olds</span></div>
+            <small>Deck sources: UDISE+ 2024–25 · AISHE 2023–24 · PLFS 2023–24 · BCG</small>
           </div>
         </EcosystemSection>
 
-        <EcosystemSection number={2} label="One ecosystem, four ways to move" className="ecosystem-map">
+        <EcosystemSection number={2} label="The student app" className="ecosystem-map">
           <div className="ecosystem-heading">
-            <p className="eyebrow">Your student life, connected</p>
-            <h2>One place for the parts of life that matter.</h2>
+            <p className="eyebrow">Four reasons to open it</p>
+            <h2>A better student day starts here.</h2>
+            <p className="ecosystem-copy">One verified place to save money, find experiences, turn skills into income, and get closer to what comes next.</p>
           </div>
           <div className="ecosystem-map__body">
             <div className="ecosystem-app-preview">
-              <div className="ecosystem-app-preview__topline"><span>inside Kouponly</span><span>01 — 04</span></div>
               <img src="/deck-assets/supplied/journey-flow.webp" alt="Kouponly mobile screens for profiles, discovery, and creator campaigns" />
-              <p>One app. Different ways to make student life work harder for you.</p>
+              <p>One app. Four ways to make student life work harder for you.</p>
             </div>
             <div className="ecosystem-points">
               <article><span>01</span><h3>Save</h3><p>Exclusive student deals, everyday savings, and more money for the things you love.</p></article>
@@ -1079,45 +1103,46 @@ function StudentHome() {
         <EcosystemSection number={3} label="How Kouponly works" tone="ink" className="ecosystem-flow">
           <div className="ecosystem-heading ecosystem-heading--light">
             <p className="eyebrow">Simple by design</p>
-            <h2>Open the app. Find your next move.</h2>
+            <h2>Search less. Do more.</h2>
+            <p className="ecosystem-copy">Kouponly connects the right student to the right deal, experience, campaign, or opportunity.</p>
           </div>
           <div className="flow-grid">
             <article><span>01</span><h3>Verify once</h3><p>Join a trusted student network with a quick eligibility check.</p></article>
-            <article><span>02</span><h3>Choose your mode</h3><p>Save, go out, learn, earn, or grow—your day sets the agenda.</p></article>
+            <article><span>02</span><h3>Pick your next step</h3><p>Save, go out, learn, earn, or grow—your day sets the agenda.</p></article>
             <article><span>03</span><h3>Make it happen</h3><p>Unlock a deal, book an experience, apply for a role, or pick a brief.</p></article>
           </div>
-          <img className="ecosystem-flow__image" src="/deck-assets/supplied/journey-flow.webp" alt="Kouponly screens for a student profile, discovery and creator campaign" />
         </EcosystemSection>
 
         <EcosystemSection number={4} label="For students" className="ecosystem-student">
           <div className="ecosystem-heading">
             <p className="eyebrow">Your advantage, in one app</p>
-            <h2>More than a discount app.</h2>
-            <p className="ecosystem-copy">Kouponly is the layer between who you are now and where you want to go next.</p>
+            <h2>Save today. Build what’s next.</h2>
+            <p className="ecosystem-copy">The Kouponly student app brings everyday value and future opportunity into the same habit.</p>
           </div>
           <div className="student-showcase">
             <img src="/deck-assets/supplied/welcome-transparent.webp" alt="Kouponly growth screen with internships, freelance and job opportunities" />
-            <div className="student-showcase__quote"><span>“</span><p>Go from saving on tonight to building what’s next.</p></div>
+            <div className="student-showcase__quote"><span>“</span><p>Go from saving on tonight to building what’s next.</p><ul><li>Deals and offers that respect your budget.</li><li>Experiences worth leaving home for.</li><li>Paid briefs, internships, and work to grow into.</li></ul></div>
           </div>
         </EcosystemSection>
 
         <EcosystemSection number={5} label="For brands and partners" tone="lime" className="ecosystem-partners">
           <div className="ecosystem-heading">
-            <p className="eyebrow">Reach the people shaping what’s next</p>
-            <h2>Meet students at the moment of choice.</h2>
+            <p className="eyebrow">The partner side</p>
+            <h2>Put your brand in the flow of student life.</h2>
+            <p className="ecosystem-copy">Kouponly gives partners one place to reach verified students with relevant offers, experiences, and opportunities.</p>
           </div>
           <div className="partner-grid">
             <article><span>Student app</span><h3>Show up where students already are.</h3><p>Put offers, experiences, and opportunities in one trusted place.</p></article>
             <article><span>Vendor portal</span><h3>Turn attention into action.</h3><p>Manage offers, view performance, and participate in campaigns built for real student demand.</p></article>
-            <article><span>K.A.I.</span><h3>Make every recommendation count.</h3><p>A verification and recommendation layer designed to connect the right student with the right next step.</p></article>
+            <article><span>K.A.I.</span><h3>Make every recommendation count.</h3><p>Student verification and personalized recommendations help the right opportunity reach the right person.</p></article>
           </div>
         </EcosystemSection>
 
         <EcosystemSection number={6} label="Come build the ecosystem" tone="ink" className="ecosystem-cta">
           <div className="ecosystem-cta__content">
             <p className="eyebrow">Coming soon</p>
-            <h2>Your next student essential is almost here.</h2>
-            <p>Join the early access list and be first to experience Kouponly.</p>
+            <h2>Be first in line.</h2>
+            <p>Kouponly is building the place students check before they go out, take the next step, or make a move.</p>
             <a className="ecosystem-button ecosystem-button--light" href="/waitlist">Join the waitlist <span aria-hidden="true">↗</span></a>
           </div>
           <div className="ecosystem-cta__mark" aria-hidden="true">K<span>O</span></div>

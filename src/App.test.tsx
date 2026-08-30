@@ -16,9 +16,9 @@ describe('Kouponly student ecosystem home', () => {
   it('publishes the student-first product narrative', () => {
     render(<App />)
 
-    expect(screen.getByRole('heading', { name: /Everything you need to move forward/i })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'One place for the parts of life that matter.' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'More than a discount app.' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Your student life, in one place.' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'A better student day starts here.' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Save today. Build what’s next.' })).toBeInTheDocument()
     expect(screen.getByText('Turn your skills and creativity into paid gigs, freelance work, and campaigns.')).toBeInTheDocument()
     expect(screen.getByText('Manage offers, view performance, and participate in campaigns built for real student demand.')).toBeInTheDocument()
   })
