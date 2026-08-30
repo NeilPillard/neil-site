@@ -21,10 +21,10 @@ export type Founder = {
 }
 
 export const navigation: NavigationItem[] = [
-  { label: 'Experience', target: 'slide-3' },
-  { label: 'Opportunity', target: 'slide-4' },
-  { label: 'Investment', target: 'slide-8' },
-  { label: 'Connect', target: 'slide-10' },
+  { label: 'The ecosystem', target: 'slide-2' },
+  { label: 'How it works', target: 'slide-3' },
+  { label: 'For students', target: 'slide-4' },
+  { label: 'For partners', target: 'slide-5' },
   { label: 'Waitlist', href: '/waitlist' },
 ]
 

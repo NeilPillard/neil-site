@@ -638,6 +638,26 @@ h3 {
   color: rgba(29, 3, 6, 0.72);
 }
 
+.solution-visuals {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+}
+
+.solution-visuals .product-screenshot {
+  width: min(300px, 100%);
+}
+
+.market-suite-image {
+  display: block;
+  width: min(1100px, 100%);
+  margin: clamp(48px, 7vw, 84px) auto 0;
+  height: auto;
+  border-radius: 18px;
+  box-shadow: 0 24px 50px rgba(29, 3, 6, 0.2);
+}
+
 .proof-row {
   display: flex;
   flex-wrap: wrap;
@@ -2047,6 +2067,12 @@ h3 {
   color: rgba(29, 3, 6, 0.58);
 }
 
+.waitlist-form__notice a {
+  color: var(--wine);
+  font-weight: 700;
+  text-underline-offset: 3px;
+}
+
 .waitlist-form__instagram {
   color: rgba(29, 3, 6, 0.7);
   font-size: 0.84rem;
@@ -2096,6 +2122,177 @@ h3 {
   font-size: 0.68rem;
   letter-spacing: 0.045em;
   text-transform: uppercase;
+}
+
+.waitlist-footer__links {
+  display: flex;
+  gap: 18px;
+}
+
+.waitlist-confirmation {
+  display: grid;
+  gap: 24px;
+}
+
+.waitlist-confirmation .kicker {
+  margin: 14px 0 -10px;
+  color: var(--wine);
+}
+
+.waitlist-confirmation h2 {
+  margin: 0;
+}
+
+.waitlist-confirmation > p:not(.kicker) {
+  max-width: 36ch;
+  margin: 0;
+  color: rgba(29, 3, 6, 0.72);
+  font-size: 1.08rem;
+  line-height: 1.55;
+}
+
+.waitlist-confirmation__socials {
+  display: grid;
+  border-top: 1px solid var(--line-dark);
+}
+
+.waitlist-confirmation__socials a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 58px;
+  border-bottom: 1px solid var(--line-dark);
+  color: var(--ink);
+  font: 500 0.76rem/1.2 var(--font-mono);
+  letter-spacing: 0.035em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.waitlist-confirmation__socials a:hover {
+  padding-inline: 10px;
+  color: var(--wine);
+  background: rgba(189, 255, 82, 0.48);
+}
+
+.waitlist-confirmation__home {
+  width: fit-content;
+  color: var(--wine);
+  font: 700 0.76rem/1 var(--font-mono);
+  letter-spacing: 0.05em;
+  text-underline-offset: 4px;
+  text-transform: uppercase;
+}
+
+.privacy-page {
+  min-height: 100svh;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+.privacy-header,
+.privacy-main,
+.privacy-footer {
+  width: min(100% - 48px, 1000px);
+  margin: 0 auto;
+}
+
+.privacy-header {
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line-dark);
+}
+
+.privacy-header .site-logo {
+  color: var(--wine);
+}
+
+.privacy-header .brand {
+  color: var(--wine);
+}
+
+.privacy-header .waitlist-header__back {
+  color: var(--ink);
+}
+
+.privacy-main {
+  padding: clamp(72px, 12vw, 150px) 0;
+}
+
+.privacy-main > .kicker {
+  color: var(--wine);
+}
+
+.privacy-main h1 {
+  max-width: 11ch;
+  margin-top: 18px;
+  font-size: clamp(3.8rem, 8.8vw, 7.5rem);
+  font-weight: 700;
+  letter-spacing: -0.08em;
+  line-height: 0.88;
+}
+
+.privacy-lede {
+  margin-top: 30px;
+  color: rgba(29, 3, 6, 0.64);
+  font: 500 0.72rem/1.4 var(--font-mono);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.privacy-content {
+  display: grid;
+  gap: 0;
+  margin-top: clamp(58px, 8vw, 100px);
+  border-top: 2px solid var(--wine);
+}
+
+.privacy-content section {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.55fr) minmax(0, 1fr);
+  gap: 36px;
+  padding: 30px 0;
+  border-bottom: 1px solid var(--line-dark);
+}
+
+.privacy-content h2 {
+  font: 500 0.72rem/1.25 var(--font-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.privacy-content p {
+  max-width: 56ch;
+  color: rgba(29, 3, 6, 0.78);
+  font-size: 1.08rem;
+  line-height: 1.6;
+}
+
+.privacy-content a {
+  color: var(--wine);
+  font-weight: 700;
+  text-underline-offset: 3px;
+}
+
+.privacy-footer {
+  min-height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  border-top: 1px solid var(--line-dark);
+  color: rgba(29, 3, 6, 0.62);
+  font: 500 0.68rem/1.2 var(--font-mono);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.privacy-footer a {
+  color: var(--wine);
+  font-weight: 700;
+  text-underline-offset: 3px;
 }
 
 .investor-section.is-visible .section-header,
@@ -2528,6 +2725,26 @@ h3 {
     justify-content: center;
     gap: 8px;
     font-size: 0.59rem;
+  }
+
+  .privacy-header,
+  .privacy-main,
+  .privacy-footer {
+    width: min(100% - 28px, 620px);
+  }
+
+  .privacy-main h1 {
+    font-size: clamp(3.5rem, 16vw, 5.5rem);
+  }
+
+  .privacy-content section {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 24px 0;
+  }
+
+  .privacy-footer {
+    min-height: 100px;
   }
 }
 

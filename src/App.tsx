@@ -9,8 +9,17 @@ import {
   type Founder,
 } from './content'
 
-const totalSections = 10
+// The previous investor presentation components remain below for route history; the
+// public route now renders StudentHome and the shared non-home routes still use them.
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
+const totalSections = 6
 const TURNSTILE_SITE_KEY = '0x4AAAAAAEEg3HHvHgQf9Z5K'
+const kouponlySocials = [
+  { label: 'Instagram · @kouponly', href: 'https://www.instagram.com/kouponly/' },
+  { label: 'Instagram · @kouponly.in', href: 'https://www.instagram.com/kouponly.in/' },
+  { label: 'LinkedIn · Kouponly', href: 'https://www.linkedin.com/company/kouponly/' },
+]
 
 declare global {
   interface Window {
@@ -219,10 +228,12 @@ function Solution() {
           <ProofBadge>Real Results</ProofBadge>
         </div>
       </div>
-      <ProductScreenshot
-        src="/deck-assets/supplied/welcome-transparent.webp"
-        alt="Kouponly welcome screen"
-      />
+      <div className="solution-visuals">
+        <ProductScreenshot
+          src="/deck-assets/supplied/welcome-transparent.webp"
+          alt="Kouponly creator and work discovery screen"
+        />
+      </div>
     </InvestorSection>
   )
 }
@@ -238,6 +249,11 @@ function Market() {
           them at the moment of choice.
         </p>
       </div>
+      <img
+        className="market-suite-image"
+        src="/deck-assets/supplied/journey-flow.webp"
+        alt="Kouponly app screens for profile, discovery, and creator campaigns"
+      />
       <ul className="metric-grid">
         {marketStats.map((stat) => (
           <li className="metric-card" key={stat.label}>
@@ -450,6 +466,7 @@ function SiteFooter() {
       <p>Investor overview · Management estimates noted throughout.</p>
       <div className="site-footer__links">
         <a href="mailto:info@kouponly.in">info@kouponly.in</a>
+        <a href="/privacy">Privacy policy</a>
         <a href="https://kouponly.com" target="_blank" rel="noopener noreferrer">
           kouponly.com <span aria-hidden="true">↗</span>
         </a>
@@ -664,7 +681,7 @@ function WaitlistPage() {
         window.turnstile?.reset(turnstileWidgetIdRef.current)
       }
       setStatus('success')
-      setMessage('You’re on the list. We’ll be in touch soon.')
+      setMessage('')
     } catch {
       setTurnstileToken('')
       setTurnstileStatus('loading')
@@ -700,158 +717,417 @@ function WaitlistPage() {
           </div>
         </section>
         <section className="waitlist-card" aria-labelledby="waitlist-form-title">
-          <div className="waitlist-card__topline">
-            <span>Early access</span>
-            <span aria-hidden="true">01</span>
-          </div>
-          <h2 id="waitlist-form-title">Save your spot.</h2>
-          <p>Be first to hear when Kouponly launches near you.</p>
-          <form id="waitlist-form" className="waitlist-form" onSubmit={handleSubmit}>
-            <div className="waitlist-form__trap" aria-hidden="true">
-              <label htmlFor="website">Website</label>
-              <input
-                id="website"
-                name="website"
-                type="text"
-                tabIndex={-1}
-                autoComplete="off"
-              />
-            </div>
-            <label>
-              Your name
-              <input
-                name="name"
-                type="text"
-                autoComplete="name"
-                minLength={2}
-                maxLength={100}
-                required
-              />
-            </label>
-            <label>
-              Email address
-              <input
-                name="email"
-                type="email"
-                autoComplete="email"
-                maxLength={254}
-                required
-              />
-            </label>
-            <label className="waitlist-form__phone-label">
-              Mobile number
-              <span className="waitlist-form__phone-row">
-                <select
-                  className="country-picker"
-                  aria-label="Country code"
-                  value={selectedCountry.code}
-                  onChange={(event) => {
-                    const country = countries.find(
-                      (item) => item.code === event.target.value,
-                    )
-                    if (country) setSelectedCountry(country)
-                  }}
-                >
-                  {countries.map((country) => (
-                    <option key={country.code} value={country.code}>
-                      {country.name} ({country.dialCode})
-                    </option>
-                  ))}
-                </select>
-                <input
-                  name="localPhone"
-                  type="tel"
-                  inputMode="tel"
-                  autoComplete="tel-national"
-                  aria-label="Mobile number"
-                  placeholder="98765 43210"
-                  pattern="[0-9 ()\-]{6,15}"
-                  value={localPhone}
-                  onChange={(event) => setLocalPhone(event.target.value)}
-                  required
-                />
-              </span>
-              <small>Select your country, then enter your mobile number.</small>
-            </label>
-            <label>
-              Instagram handle
-              <input
-                name="instagramHandle"
-                type="text"
-                autoComplete="off"
-                placeholder="yourhandle"
-                maxLength={30}
-                required
-              />
-              <small>Enter it without the @ sign.</small>
-            </label>
-            <div className="waitlist-form__verification">
-              <div className="waitlist-form__turnstile" ref={turnstileContainerRef} />
-              <p className="waitlist-form__verification-status" aria-live="polite">
-                {turnstileStatus === 'ready'
-                  ? 'Verification complete.'
-                  : turnstileStatus === 'error'
-                    ? 'Verification could not load. Check your connection or privacy blocker.'
-                    : 'Checking verification…'}
+          {status === 'success' ? (
+            <div className="waitlist-confirmation" role="status">
+              <div className="waitlist-card__topline">
+                <span>Early access confirmed</span>
+                <span aria-hidden="true">✓</span>
+              </div>
+              <p className="kicker">You’re in</p>
+              <h2 id="waitlist-form-title">You’re on the list.</h2>
+              <p>
+                Thanks for joining Kouponly. Follow along for launch updates, early access
+                news, and what’s next.
               </p>
-              {turnstileStatus === 'error' ? (
+              <div
+                className="waitlist-confirmation__socials"
+                aria-label="Follow Kouponly"
+              >
+                {kouponlySocials.map((social) => (
+                  <a
+                    key={social.href}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {social.label} <span aria-hidden="true">↗</span>
+                  </a>
+                ))}
+              </div>
+              <a className="waitlist-confirmation__home" href="/">
+                Back to Kouponly <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+          ) : (
+            <>
+              <div className="waitlist-card__topline">
+                <span>Early access</span>
+                <span aria-hidden="true">01</span>
+              </div>
+              <h2 id="waitlist-form-title">Save your spot.</h2>
+              <p>Be first to hear when Kouponly launches near you.</p>
+              <form id="waitlist-form" className="waitlist-form" onSubmit={handleSubmit}>
+                <div className="waitlist-form__trap" aria-hidden="true">
+                  <label htmlFor="website">Website</label>
+                  <input
+                    id="website"
+                    name="website"
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
+                </div>
+                <label>
+                  Your name
+                  <input
+                    name="name"
+                    type="text"
+                    autoComplete="name"
+                    minLength={2}
+                    maxLength={100}
+                    required
+                  />
+                </label>
+                <label>
+                  Email address
+                  <input
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    maxLength={254}
+                    required
+                  />
+                </label>
+                <label className="waitlist-form__phone-label">
+                  Mobile number
+                  <span className="waitlist-form__phone-row">
+                    <select
+                      className="country-picker"
+                      aria-label="Country code"
+                      value={selectedCountry.code}
+                      onChange={(event) => {
+                        const country = countries.find(
+                          (item) => item.code === event.target.value,
+                        )
+                        if (country) setSelectedCountry(country)
+                      }}
+                    >
+                      {countries.map((country) => (
+                        <option key={country.code} value={country.code}>
+                          {country.name} ({country.dialCode})
+                        </option>
+                      ))}
+                    </select>
+                    <input
+                      name="localPhone"
+                      type="tel"
+                      inputMode="tel"
+                      autoComplete="tel-national"
+                      aria-label="Mobile number"
+                      placeholder="98765 43210"
+                      pattern="[0-9 ()\-]{6,15}"
+                      value={localPhone}
+                      onChange={(event) => setLocalPhone(event.target.value)}
+                      required
+                    />
+                  </span>
+                  <small>Select your country, then enter your mobile number.</small>
+                </label>
+                <label>
+                  Instagram handle
+                  <input
+                    name="instagramHandle"
+                    type="text"
+                    autoComplete="off"
+                    placeholder="yourhandle"
+                    maxLength={30}
+                    required
+                  />
+                  <small>Enter it without the @ sign.</small>
+                </label>
+                <div className="waitlist-form__verification">
+                  <div className="waitlist-form__turnstile" ref={turnstileContainerRef} />
+                  <p className="waitlist-form__verification-status" aria-live="polite">
+                    {turnstileStatus === 'ready'
+                      ? 'Verification complete.'
+                      : turnstileStatus === 'error'
+                        ? 'Verification could not load. Check your connection or privacy blocker.'
+                        : 'Checking verification…'}
+                  </p>
+                  {turnstileStatus === 'error' ? (
+                    <button
+                      className="waitlist-form__verification-retry"
+                      type="button"
+                      onClick={retryVerification}
+                    >
+                      Retry verification
+                    </button>
+                  ) : null}
+                </div>
                 <button
-                  className="waitlist-form__verification-retry"
-                  type="button"
-                  onClick={retryVerification}
+                  className="waitlist-form__submit"
+                  type="submit"
+                  disabled={status === 'submitting' || turnstileStatus !== 'ready'}
                 >
-                  Retry verification
+                  {status === 'submitting'
+                    ? 'Joining waitlist…'
+                    : turnstileStatus === 'ready'
+                      ? 'Join the waitlist'
+                      : 'Waiting for verification…'}
                 </button>
-              ) : null}
-            </div>
-            <button
-              className="waitlist-form__submit"
-              type="submit"
-              disabled={status === 'submitting' || turnstileStatus !== 'ready'}
-            >
-              {status === 'submitting'
-                ? 'Joining waitlist…'
-                : turnstileStatus === 'ready'
-                  ? 'Join the waitlist'
-                  : 'Waiting for verification…'}
-            </button>
-            <p className="waitlist-form__notice">
-              We use your details to contact you about the giveaway and Kouponly launch
-              updates.
-            </p>
-            <p className="waitlist-form__instagram">
-              Follow{' '}
-              <a
-                href="https://www.instagram.com/kouponly/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                @kouponly
-              </a>{' '}
-              and{' '}
-              <a
-                href="https://www.instagram.com/kouponly.in/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                @kouponly.in
-              </a>{' '}
-              on Instagram.
-            </p>
-            {message ? (
-              <p
-                className={`waitlist-form__message waitlist-form__message--${status}`}
-                role={status === 'error' ? 'alert' : 'status'}
-              >
-                {message}
-              </p>
-            ) : null}
-          </form>
+                <p className="waitlist-form__notice">
+                  We use your details to contact you about the giveaway and Kouponly
+                  launch updates. Read our <a href="/privacy">privacy policy</a>.
+                </p>
+                <p className="waitlist-form__instagram">
+                  Follow{' '}
+                  <a
+                    href="https://www.instagram.com/kouponly/"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    @kouponly
+                  </a>{' '}
+                  and{' '}
+                  <a
+                    href="https://www.instagram.com/kouponly.in/"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    @kouponly.in
+                  </a>{' '}
+                  on Instagram.
+                </p>
+                {message ? (
+                  <p
+                    className={`waitlist-form__message waitlist-form__message--${status}`}
+                    role={status === 'error' ? 'alert' : 'status'}
+                  >
+                    {message}
+                  </p>
+                ) : null}
+              </form>
+            </>
+          )}
         </section>
       </main>
       <footer className="waitlist-footer">
         <span>kouponly</span>
-        <a href="mailto:info@kouponly.in">info@kouponly.in</a>
+        <span className="waitlist-footer__links">
+          <a href="/privacy">Privacy policy</a>
+          <a href="mailto:info@kouponly.in">info@kouponly.in</a>
+        </span>
+      </footer>
+    </div>
+  )
+}
+
+function PrivacyPage() {
+  return (
+    <div className="privacy-page">
+      <header className="privacy-header">
+        <a className="site-logo" href="/" aria-label="Kouponly home">
+          <Brand />
+        </a>
+        <a className="waitlist-header__back" href="/waitlist">
+          Waitlist <span aria-hidden="true">↗</span>
+        </a>
+      </header>
+      <main className="privacy-main">
+        <p className="kicker">Privacy policy</p>
+        <h1>Your information, plainly explained.</h1>
+        <p className="privacy-lede">Effective 15 August 2026</p>
+        <div className="privacy-content">
+          <section>
+            <h2>What we collect</h2>
+            <p>
+              When you join the waitlist, we collect your name, email address, mobile
+              number, and Instagram handle. Our signup form also uses Cloudflare Turnstile
+              to help prevent spam and abuse.
+            </p>
+          </section>
+          <section>
+            <h2>How we use it</h2>
+            <p>
+              We use these details to manage the waitlist, contact you about the giveaway
+              and Kouponly launch updates, and protect the form from fraudulent signups.
+              We do not sell your personal information.
+            </p>
+          </section>
+          <section>
+            <h2>Who can access it</h2>
+            <p>
+              Kouponly’s authorised team can access waitlist records when needed to run
+              the launch. We use Cloudflare to host this site, verify signups, and store
+              the waitlist. We share information only with service providers needed for
+              those purposes or when required by law.
+            </p>
+          </section>
+          <section>
+            <h2>Retention and your choices</h2>
+            <p>
+              We keep your waitlist details while they are needed for the launch and its
+              follow-up communications. You can ask to access, correct, or delete your
+              details, or stop receiving updates, by emailing{' '}
+              <a href="mailto:info@kouponly.in">info@kouponly.in</a>.
+            </p>
+          </section>
+          <section>
+            <h2>Links to other platforms</h2>
+            <p>
+              Our site links to Instagram and LinkedIn. Those platforms handle information
+              under their own privacy policies once you leave Kouponly.
+            </p>
+          </section>
+          <section>
+            <h2>Contact</h2>
+            <p>
+              For privacy questions, contact{' '}
+              <a href="mailto:info@kouponly.in">info@kouponly.in</a>. We may update this
+              policy as the product evolves, and will post the current version here.
+            </p>
+          </section>
+        </div>
+      </main>
+      <footer className="privacy-footer">
+        <span>© 2026 Kouponly</span>
+        <a href="/waitlist">Join the waitlist</a>
+      </footer>
+    </div>
+  )
+}
+
+function EcosystemSection({
+  number,
+  label,
+  tone = 'paper',
+  className = '',
+  children,
+}: InvestorSectionProps) {
+  return (
+    <section
+      id={`slide-${number}`}
+      className={`investor-section ecosystem-section ecosystem-section--${tone} ${className}`}
+      aria-labelledby={`ecosystem-section-${number}`}
+    >
+      <div className="ecosystem-shell">
+        <div className="ecosystem-label" id={`ecosystem-section-${number}`}>
+          <span>kouponly.com</span>
+          <strong>{label}</strong>
+        </div>
+        {children}
+      </div>
+    </section>
+  )
+}
+
+function StudentHome() {
+  return (
+    <div className="student-home">
+      <a className="skip-link" href="#main-content">
+        Skip to Kouponly
+      </a>
+      <header className="student-header">
+        <a className="student-header__logo" href="#slide-1" aria-label="Kouponly home">
+          <Brand dark />
+        </a>
+        <nav aria-label="Kouponly overview">
+          {navigation.slice(0, 4).map((item) => (
+            <a key={item.label} href={item.href ?? `#${item.target}`}>
+              {item.label}
+            </a>
+          ))}
+        </nav>
+        <a className="student-header__cta" href="/waitlist">
+          Join the waitlist <span aria-hidden="true">↗</span>
+        </a>
+      </header>
+
+      <main id="main-content">
+        <EcosystemSection number={1} label="The student super-app" className="ecosystem-hero">
+          <div className="ecosystem-hero__copy">
+            <p className="eyebrow">Built around your student life</p>
+            <h1>Everything you need to <em>move forward.</em></h1>
+            <p className="ecosystem-hero__lede">
+              Save on the things you already do. Discover what’s next. Turn your talent
+              into opportunity.
+            </p>
+            <a className="ecosystem-button" href="/waitlist">
+              Get early access <span aria-hidden="true">↗</span>
+            </a>
+            <p className="ecosystem-note"><span aria-hidden="true">●</span> Made for students, by people who get it.</p>
+          </div>
+          <div className="ecosystem-hero__visual" aria-label="Preview of the Kouponly student app">
+            <span className="hero-orbit hero-orbit--one" aria-hidden="true" />
+            <span className="hero-orbit hero-orbit--two" aria-hidden="true" />
+            <div className="hero-sticker hero-sticker--top">YOUR NEXT MOVE <span>✳</span></div>
+            <img src="/deck-assets/supplied/discovery-transparent.webp" alt="Kouponly home screen showing deals, experiences and growth opportunities" />
+            <div className="hero-sticker hero-sticker--bottom">SAVE · EARN · GROW</div>
+          </div>
+        </EcosystemSection>
+
+        <EcosystemSection number={2} label="One ecosystem, four ways to move" className="ecosystem-map">
+          <div className="ecosystem-heading">
+            <p className="eyebrow">Your student life, connected</p>
+            <h2>One place for the parts of life that matter.</h2>
+          </div>
+          <div className="ecosystem-map__body">
+            <div className="ecosystem-app-preview">
+              <div className="ecosystem-app-preview__topline"><span>inside Kouponly</span><span>01 — 04</span></div>
+              <img src="/deck-assets/supplied/journey-flow.webp" alt="Kouponly mobile screens for profiles, discovery, and creator campaigns" />
+              <p>One app. Different ways to make student life work harder for you.</p>
+            </div>
+            <div className="ecosystem-points">
+              <article><span>01</span><h3>Save</h3><p>Exclusive student deals, everyday savings, and more money for the things you love.</p></article>
+              <article><span>02</span><h3>Discover</h3><p>Find events, places, experiences, and brands worth getting out for.</p></article>
+              <article><span>03</span><h3>Earn</h3><p>Turn your skills and creativity into paid gigs, freelance work, and campaigns.</p></article>
+              <article><span>04</span><h3>Grow</h3><p>Find internships, jobs, resources, and the next opportunity to move forward.</p></article>
+            </div>
+          </div>
+        </EcosystemSection>
+
+        <EcosystemSection number={3} label="How Kouponly works" tone="ink" className="ecosystem-flow">
+          <div className="ecosystem-heading ecosystem-heading--light">
+            <p className="eyebrow">Simple by design</p>
+            <h2>Open the app. Find your next move.</h2>
+          </div>
+          <div className="flow-grid">
+            <article><span>01</span><h3>Verify once</h3><p>Join a trusted student network with a quick eligibility check.</p></article>
+            <article><span>02</span><h3>Choose your mode</h3><p>Save, go out, learn, earn, or grow—your day sets the agenda.</p></article>
+            <article><span>03</span><h3>Make it happen</h3><p>Unlock a deal, book an experience, apply for a role, or pick a brief.</p></article>
+          </div>
+          <img className="ecosystem-flow__image" src="/deck-assets/supplied/journey-flow.webp" alt="Kouponly screens for a student profile, discovery and creator campaign" />
+        </EcosystemSection>
+
+        <EcosystemSection number={4} label="For students" className="ecosystem-student">
+          <div className="ecosystem-heading">
+            <p className="eyebrow">Your advantage, in one app</p>
+            <h2>More than a discount app.</h2>
+            <p className="ecosystem-copy">Kouponly is the layer between who you are now and where you want to go next.</p>
+          </div>
+          <div className="student-showcase">
+            <img src="/deck-assets/supplied/welcome-transparent.webp" alt="Kouponly growth screen with internships, freelance and job opportunities" />
+            <div className="student-showcase__quote"><span>“</span><p>Go from saving on tonight to building what’s next.</p></div>
+          </div>
+        </EcosystemSection>
+
+        <EcosystemSection number={5} label="For brands and partners" tone="lime" className="ecosystem-partners">
+          <div className="ecosystem-heading">
+            <p className="eyebrow">Reach the people shaping what’s next</p>
+            <h2>Meet students at the moment of choice.</h2>
+          </div>
+          <div className="partner-grid">
+            <article><span>Student app</span><h3>Show up where students already are.</h3><p>Put offers, experiences, and opportunities in one trusted place.</p></article>
+            <article><span>Vendor portal</span><h3>Turn attention into action.</h3><p>Manage offers, view performance, and participate in campaigns built for real student demand.</p></article>
+            <article><span>K.A.I.</span><h3>Make every recommendation count.</h3><p>A verification and recommendation layer designed to connect the right student with the right next step.</p></article>
+          </div>
+        </EcosystemSection>
+
+        <EcosystemSection number={6} label="Come build the ecosystem" tone="ink" className="ecosystem-cta">
+          <div className="ecosystem-cta__content">
+            <p className="eyebrow">Coming soon</p>
+            <h2>Your next student essential is almost here.</h2>
+            <p>Join the early access list and be first to experience Kouponly.</p>
+            <a className="ecosystem-button ecosystem-button--light" href="/waitlist">Join the waitlist <span aria-hidden="true">↗</span></a>
+          </div>
+          <div className="ecosystem-cta__mark" aria-hidden="true">K<span>O</span></div>
+        </EcosystemSection>
+      </main>
+
+      <footer className="student-footer">
+        <Brand dark />
+        <p>The student ecosystem for saving, earning, learning, and growing.</p>
+        <div><a href="/privacy">Privacy</a><a href="mailto:info@kouponly.in">Contact</a><a href="https://www.instagram.com/kouponly/" target="_blank" rel="noreferrer">Instagram ↗</a></div>
       </footer>
     </div>
   )
@@ -1163,32 +1439,6 @@ function useSectionNavigation() {
   return activeSection
 }
 
-function InvestorOverview() {
-  const activeSection = useSectionNavigation()
-
-  return (
-    <div className="site-shell">
-      <a className="skip-link" href="#main-content">
-        Skip to investor overview
-      </a>
-      <SiteHeader activeSection={activeSection} />
-      <main id="main-content">
-        <Intro />
-        <Problem />
-        <Solution />
-        <Market />
-        <Verification />
-        <FounderProfile founder={founders[0]} number={6} />
-        <FounderProfile founder={founders[1]} number={7} />
-        <Ask />
-        <Projections />
-        <Contact />
-      </main>
-      <SiteFooter />
-    </div>
-  )
-}
-
 export default function App() {
   if (window.location.pathname === '/admin' || window.location.pathname === '/admin/') {
     return <AdminPage />
@@ -1201,5 +1451,12 @@ export default function App() {
     return <WaitlistPage />
   }
 
-  return <InvestorOverview />
+  if (
+    window.location.pathname === '/privacy' ||
+    window.location.pathname === '/privacy/'
+  ) {
+    return <PrivacyPage />
+  }
+
+  return <StudentHome />
 }

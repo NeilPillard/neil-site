@@ -101,4 +101,16 @@ test('renders the dedicated waitlist page and required form fields', async ({ pa
   await expect(page.getByRole('combobox', { name: 'Country code' })).toBeVisible()
   await page.getByRole('combobox', { name: 'Country code' }).selectOption('QA')
   await expect(page.getByRole('combobox', { name: 'Country code' })).toHaveValue('QA')
+  await expect(
+    page.getByRole('link', { name: 'privacy policy' }).first(),
+  ).toHaveAttribute('href', '/privacy')
+})
+
+test('renders the privacy policy at its public route', async ({ page }) => {
+  await page.goto('/privacy')
+
+  await expect(
+    page.getByRole('heading', { name: 'Your information, plainly explained.' }),
+  ).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'What we collect' })).toBeVisible()
 })

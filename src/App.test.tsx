@@ -2,57 +2,37 @@ import { act, fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 import App from './App'
 
-describe('Kouponly investor overview', () => {
-  it('renders the complete 10-section narrative with stable deep links', () => {
+describe('Kouponly student ecosystem home', () => {
+  it('renders the complete student ecosystem narrative with stable deep links', () => {
     const { container } = render(<App />)
     const sections = container.querySelectorAll('.investor-section')
 
-    expect(sections).toHaveLength(10)
+    expect(sections).toHaveLength(6)
     sections.forEach((section, index) => {
       expect(section).toHaveAttribute('id', `slide-${index + 1}`)
     })
   })
 
-  it('publishes the corrected and qualified investor content', () => {
+  it('publishes the student-first product narrative', () => {
     render(<App />)
 
-    expect(screen.queryByText(/Tcke/i)).not.toBeInTheDocument()
-    expect(
-      screen.queryByText(
-        'Management estimates. Supporting sources are available during diligence.',
-      ),
-    ).not.toBeInTheDocument()
-    expect(screen.queryByText(/allocated today/i)).not.toBeInTheDocument()
-    expect(
-      screen.getByText(
-        'Revenue scales from early traction to ₹1,650 Cr by Year 5, driven by increasing market penetration and geographic expansion.',
-      ),
-    ).toBeInTheDocument()
-    expect(screen.getByText('1650')).toBeInTheDocument()
-    expect(screen.getAllByText('Early launch / market entry')).toHaveLength(2)
-    expect(screen.getAllByText('Large-scale market penetration')).toHaveLength(2)
-    expect(
-      screen.getByText(
-        'Built a 350+ partner network across multiple industries in Qatar within the first year.',
-      ),
-    ).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /Everything you need to move forward/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'One place for the parts of life that matter.' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'More than a discount app.' })).toBeInTheDocument()
+    expect(screen.getByText('Turn your skills and creativity into paid gigs, freelance work, and campaigns.')).toBeInTheDocument()
+    expect(screen.getByText('Manage offers, view performance, and participate in campaigns built for real student demand.')).toBeInTheDocument()
   })
 
-  it('keeps direct founder contact routes accessible', () => {
+  it('keeps the student conversion routes accessible', () => {
     render(<App />)
 
-    expect(
-      screen.getByRole('link', { name: 'neil.j.pillard@gmail.com' }),
-    ).toHaveAttribute('href', 'mailto:neil.j.pillard@gmail.com')
-    expect(screen.getByRole('link', { name: 'aazamthakur@gmail.com' })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: 'Contact' })).toHaveAttribute(
       'href',
-      'mailto:aazamthakur@gmail.com',
+      'mailto:info@kouponly.in',
     )
-    expect(screen.getAllByRole('link', { name: 'info@kouponly.in' })).not.toHaveLength(0)
-    expect(
-      screen.getByRole('link', { name: 'View Neil Jose Pillard on LinkedIn' }),
-    ).toHaveAttribute('href', 'https://www.linkedin.com/in/neilpillard')
-    expect(screen.getByRole('link', { name: 'Waitlist' })).toHaveAttribute(
+    expect(screen.getAllByRole('link', { name: /Join the waitlist/ })).not.toHaveLength(0)
+    expect(screen.getAllByRole('link', { name: 'Join the waitlist' })).toHaveLength(2)
+    expect(screen.getAllByRole('link', { name: 'Join the waitlist' })[0]).toHaveAttribute(
       'href',
       '/waitlist',
     )
@@ -63,7 +43,7 @@ describe('Kouponly investor overview', () => {
 
     expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1)
     expect(
-      screen.getByRole('link', { name: 'Skip to investor overview' }),
+      screen.getByRole('link', { name: 'Skip to Kouponly' }),
     ).toHaveAttribute('href', '#main-content')
   })
 
@@ -147,6 +127,80 @@ describe('Kouponly investor overview', () => {
 
     delete window.turnstile
     vi.unstubAllGlobals()
+    window.history.replaceState(null, '', '/')
+  })
+
+  it('replaces the form with a social confirmation after signup', async () => {
+    window.history.replaceState(null, '', '/waitlist')
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockImplementation((url: string) =>
+        Promise.resolve({
+          ok: true,
+          json: async () =>
+            url === '/api/waitlist/count' ? { count: 1234 } : { count: 1235 },
+        }),
+      ),
+    )
+
+    let verificationCallback: ((token: string) => void) | undefined
+    window.turnstile = {
+      render: (_container, options) => {
+        verificationCallback = options.callback
+        return 'widget-1'
+      },
+      remove: vi.fn(),
+      reset: vi.fn(),
+    }
+
+    const { container } = render(<App />)
+    await act(async () => verificationCallback?.('verified-token'))
+
+    fireEvent.change(screen.getByRole('textbox', { name: 'Your name' }), {
+      target: { value: 'Aarav Sharma' },
+    })
+    fireEvent.change(screen.getByRole('textbox', { name: 'Email address' }), {
+      target: { value: 'aarav@example.com' },
+    })
+    fireEvent.change(screen.getByRole('textbox', { name: /Mobile number/i }), {
+      target: { value: '9876543210' },
+    })
+    fireEvent.change(screen.getByRole('textbox', { name: /Instagram handle/i }), {
+      target: { value: 'aarav' },
+    })
+    fireEvent.submit(container.querySelector('#waitlist-form')!)
+
+    expect(
+      await screen.findByRole('heading', { name: 'You’re on the list.' }),
+    ).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Instagram · @kouponly' })).toHaveAttribute(
+      'href',
+      'https://www.instagram.com/kouponly/',
+    )
+    expect(screen.getByRole('link', { name: 'LinkedIn · Kouponly' })).toHaveAttribute(
+      'href',
+      'https://www.linkedin.com/company/kouponly/',
+    )
+
+    delete window.turnstile
+    vi.unstubAllGlobals()
+    window.history.replaceState(null, '', '/')
+  })
+
+  it('renders a privacy policy at its stable route', () => {
+    window.history.replaceState(null, '', '/privacy')
+
+    render(<App />)
+
+    expect(
+      screen.getByRole('heading', { name: 'Your information, plainly explained.' }),
+    ).toBeInTheDocument()
+    expect(screen.getByText('What we collect')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Join the waitlist' })).toHaveAttribute(
+      'href',
+      '/waitlist',
+    )
+
     window.history.replaceState(null, '', '/')
   })
 })
