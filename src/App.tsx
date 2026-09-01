@@ -46,6 +46,7 @@ type InvestorSectionProps = {
   label: string
   tone?: SectionTone
   className?: string
+  hideLabel?: boolean
   children: ReactNode
 }
 
@@ -992,19 +993,23 @@ function EcosystemSection({
   label,
   tone = 'paper',
   className = '',
+  hideLabel = false,
   children,
 }: InvestorSectionProps) {
   return (
     <section
       id={`slide-${number}`}
       className={`investor-section ecosystem-section ecosystem-section--${tone} ${className}`}
-      aria-labelledby={`ecosystem-section-${number}`}
+      aria-labelledby={hideLabel ? undefined : `ecosystem-section-${number}`}
+      aria-label={hideLabel ? label : undefined}
     >
       <div className="ecosystem-shell">
-        <div className="ecosystem-label" id={`ecosystem-section-${number}`}>
-          <span>kouponly.com</span>
-          <strong>{label}</strong>
-        </div>
+        {!hideLabel && (
+          <div className="ecosystem-label" id={`ecosystem-section-${number}`}>
+            <span>kouponly.com</span>
+            <strong>{label}</strong>
+          </div>
+        )}
         {children}
       </div>
     </section>
@@ -1054,7 +1059,7 @@ function StudentHome() {
       </header>
 
       <main id="main-content">
-        <EcosystemSection number={1} label="The student super-app" className="ecosystem-hero">
+        <EcosystemSection number={1} label="The student super-app" hideLabel className="ecosystem-hero">
           <div className="ecosystem-hero__copy">
             <p className="eyebrow">The super-app for students</p>
             <h1>Your student life, <em>in one place.</em></h1>
