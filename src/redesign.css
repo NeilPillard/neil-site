@@ -337,14 +337,13 @@ main[id='main-content'] > section[id] { scroll-margin-top: 90px; }
     position: static;
     grid-column: 1 / -1;
     grid-row: 2;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    gap: 2px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 4px;
     width: calc(100% + 28px);
     margin-left: -14px;
     padding: 8px 14px 10px;
-    overflow-x: auto;
+    overflow: visible;
     border: 0;
     border-top: 1px solid rgba(22,22,22,.14);
     border-radius: 0;
@@ -353,7 +352,18 @@ main[id='main-content'] > section[id] { scroll-margin-top: 90px; }
     scrollbar-width: none;
   }
   .student-header__nav::-webkit-scrollbar { display: none; }
-  .student-header__nav a { flex: 0 0 auto; white-space: nowrap; padding: 8px 11px; }
+  .student-header__nav a { width: 100%; box-sizing: border-box; text-align: center; white-space: nowrap; padding: 8px 11px; }
+}
+
+@media (max-width: 560px) {
+  .student-header nav.student-header__nav,
+  .student-header.is-menu-open nav.student-header__nav {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 4px;
+    overflow: visible;
+  }
+  .student-header__nav a { width: 100%; box-sizing: border-box; text-align: center; }
 }
 
 @media (prefers-color-scheme: dark) and (max-width: 900px) {
@@ -429,6 +439,8 @@ main[id='main-content'] > section[id] { scroll-margin-top: 90px; }
   .ecosystem-hero h1 { font-size: clamp(3.7rem, 17vw, 5.4rem); }
   .ecosystem-hero__visual { height: 530px; }
   .ecosystem-hero__visual > img { width: min(340px, 88vw); }
+  .student-header nav.student-header__nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; overflow: visible; }
+  .student-header__nav a { width: 100%; box-sizing: border-box; text-align: center; }
   .ecosystem-app-preview { padding: 0; background: transparent; border: 0; box-shadow: none; }
 }
 
@@ -1449,14 +1461,13 @@ h2 {
   .student-header.is-menu-open nav.student-header__nav {
     position: static;
     grid-column: 1 / -1;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    gap: 2px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 4px;
     width: calc(100% + 28px);
     margin-left: -14px;
     padding: 8px 14px 10px;
-    overflow-x: auto;
+    overflow: visible;
     border: 0;
     border-top: 1px solid rgba(22,22,22,.14);
     border-radius: 0;
@@ -1465,7 +1476,7 @@ h2 {
     scrollbar-width: none;
   }
   .student-header__nav::-webkit-scrollbar { display: none; }
-  .student-header__nav a { flex: 0 0 auto; white-space: nowrap; padding: 8px 11px; }
+  .student-header__nav a { width: 100%; box-sizing: border-box; text-align: center; white-space: nowrap; padding: 8px 11px; }
 }
 
 @media (prefers-color-scheme: dark) and (max-width: 900px) {
